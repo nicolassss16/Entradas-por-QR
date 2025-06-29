@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tickets Generados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .ticket {
+            display: inline-block;
+            margin: 20px;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .ticket img {
+            width: 200px;
+            height: 200px;
+        }
+
+        .ticket p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tickets Generados</h1>
+    {% for ticket in tickets %}
+        <div class="ticket">
+            <p><strong>Nombre:</strong> {{ ticket.name }}</p>
+            {# ACCESO AL NOMBRE DEL EVENTO A TRAVÉS DE LA RELACIÓN 'event' #}
+            <p><strong>Evento:</strong> {{ ticket.event.name }}</p>
+            <img src="data:image/png;base64,{{ ticket.qr_code }}" alt="QR del Ticket">
+        </div>
+    {% endfor %}
+</body>
+</html>
+
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compra de Tickets</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <style>
+    /* Estilos igual que antes, no los repito para ahorrar espacio */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #f0f2f5 0%, #e0e5ec 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #333;
+    }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 { font-size: 2.5rem; color: #4361ee; margin-bottom: 10px; font-weight: 700; }
+    .header p { font-size: 1.1rem; color: #4a5568; max-width: 600px; }
+    .card { background-color: white; width: 100%; max-width: 500px; border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 30px; }
+    .card-header { background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+      color: white; padding: 20px; text-align: center; }
+    .card-header h2 { font-weight: 500; font-size: 1.5rem; }
+    .card-body { padding: 30px; }
+    .form-group { margin-bottom: 25px; position: relative; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #2d3748; font-size: 1rem; }
+    .input-icon { position: relative; }
+    .input-icon i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #718096;
+      font-size: 18px;
+    }
+    .input-icon input, .input-icon select { padding-left: 40px; }
+    input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 14px 16px 14px 40px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      background-color: #f8fafc;
+      color: #1a202c;
+    }
+    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+      border-color: #4361ee;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+      outline: none;
+      background-color: white;
+    }
+    button {
+      background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+      color: white;
+      padding: 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+    .alert {
+      padding: 16px;
+      margin-bottom: 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #34d399;
+    }
+    .error {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #f87171;
+    }
+    .footer {
+      text-align: center;
+      color: #718096;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+    .footer a {
+      color: #4361ee;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>QRPASS</h1>
+    <p>Compra tus tickets de forma rápida y segura</p>
+  </div>
+
+  <div class="container">
+
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Comprar Tickets</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/checkout_simulado">
+          <div class="form-group">
+            <label for="name">Nombre Completo</label>
+            <div class="input-icon">
+              <i class="fas fa-user"></i>
+              <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="event">Evento</label>
+            <div class="input-icon">
+              <i class="fas fa-ticket-alt"></i>
+              <select id="event" name="event" required>
+                {% for event in events %}
+                  <option value="{{ event.id }}">{{ event.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="quantity">Cantidad de Tickets</label>
+            <div class="input-icon">
+              <i class="fas fa-hashtag"></i>
+              <input type="number" id="quantity" name="quantity" min="1" placeholder="Ej: 2" required>
+            </div>
+          </div>
+
+          <button type="submit">Ir al pago simulado</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2025 QRPASS. Todos los derechos reservados.</p>
+  </div>
+
+</body>
+</html>

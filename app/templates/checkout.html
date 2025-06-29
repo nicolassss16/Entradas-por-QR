@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #f0f2f5 0%, #e0e5ec 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: white;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #4361ee;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2d3748;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 16px;
+    }
+
+    input:focus, select:focus {
+      border-color: #4361ee;
+      outline: none;
+      background: white;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .summary {
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .summary p {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Confirmar Compra</h2>
+    <div class="summary">
+      <p><strong>Nombre:</strong> {{ name }}</p>
+      <p><strong>Evento:</strong> {{ event.name }}</p>
+      <p><strong>Cantidad:</strong> {{ quantity }}</p>
+    </div>
+    <form action="{{ url_for('main.pago_confirmado') }}" method="POST">
+      <input type="hidden" name="name" value="{{ name }}">
+      <input type="hidden" name="event_id" value="{{ event.id }}">
+      <input type="hidden" name="quantity" value="{{ quantity }}">
+
+      <div class="form-group">
+        <label for="payment_method">Método de Pago</label>
+        <select name="payment_method" id="payment_method" required>
+          <option value="">Selecciona un método</option>
+          <option value="mercadopago">MercadoPago</option>
+          <option value="tarjeta">Tarjeta de Crédito</option>
+          <option value="efectivo">Pago en Efectivo</option>
+          <option value="transferencia">Transferencia Bancaria</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn">Confirmar y Finalizar</button>
+    </form>
+  </div>
+</body>
+</html>

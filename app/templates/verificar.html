@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verificar Ticket</title>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        #reader {
+            margin: 0 auto;
+            width: 300px;
+            max-width: 90%;
+            border: 4px solid #333;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .ok { color: green; }
+        .error { color: red; }
+        .warn { color: orange; }
+
+        #ticket-details {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left; /* Alinea el texto a la izquierda dentro del cuadro de detalles */
+        }
+
+        #ticket-details p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        #ticket-details strong {
+            display: inline-block; /* Hace que el strong ocupe menos espacio */
+            width: 100px; /* Ancho fijo para las etiquetas, ajusta si es necesario */
+        }
+    </style>
+</head>
+<body>
+    <h1>Escanear QR del Ticket</h1>
+    <div id="reader"></div>
+    <p id="resultado"></p>
+
+    <!-- Nuevo contenedor para mostrar los detalles del ticket -->
+    <div id="ticket-details" style="display: none;">
+        <h2>Detalles del Ticket</h2>
+        <p><strong>Código:</strong> <span id="detail-code"></span></p>
+        <p><strong>Comprador:</strong> <span id="detail-buyer"></span></p>
+        <p><strong>Evento:</strong> <span id="detail-event"></span></p>
+        <p><strong>Usado:</strong> <span id="detail-usado"></span></p>
+    </div>
+
+    <script>
+        function enviarTicket(ticket_id) {
+            fetch('/api/verificar_ticket', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ticket_id: ticket_id })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultado = document.getElementById('resultado');
+                const ticketDetailsDiv = document.getElementById('ticket-details');
+
+                resultado.innerText = data.message;
+                resultado.className = ""; // Limpiar clases existentes
+
+                // Limpiar detalles anteriores
+                document.getElementById('detail-code').innerText = '';
+                document.getElementById('detail-buyer').innerText = '';
+                document.getElementById('detail-event').innerText = '';
+                document.getElementById('detail-usado').innerText = '';
+                ticketDetailsDiv.style.display = 'none'; // Ocultar por defecto
+
+                if (data.status === "ok") {
+                    resultado.classList.add("ok");
+                    // Mostrar detalles si el ticket es válido
+                    if (data.ticket_info) {
+                        document.getElementById('detail-code').innerText = data.ticket_info.ticket_code;
+                        document.getElementById('detail-buyer').innerText = data.ticket_info.buyer_name;
+                        document.getElementById('detail-event').innerText = data.ticket_info.event_name;
+                        document.getElementById('detail-usado').innerText = data.ticket_info.usado ? 'Sí' : 'No';
+                        ticketDetailsDiv.style.display = 'block'; // Mostrar el contenedor de detalles
+                    }
+                } else if (data.status === "warning") { // Manejo del nuevo status 'warning' para tickets usados
+                    resultado.classList.add("warn");
+                    if (data.ticket_info) {
+                        document.getElementById('detail-code').innerText = data.ticket_info.ticket_code;
+                        document.getElementById('detail-buyer').innerText = data.ticket_info.buyer_name;
+                        document.getElementById('detail-event').innerText = data.ticket_info.event_name;
+                        document.getElementById('detail-usado').innerText = data.ticket_info.usado ? 'Sí' : 'No';
+                        ticketDetailsDiv.style.display = 'block';
+                    }
+                }
+                else {
+                    resultado.classList.add("error");
+                    // No mostrar detalles si hay un error (ticket no encontrado)
+                }
+            })
+            .catch(error => {
+                console.error('Error al verificar ticket:', error);
+                const resultado = document.getElementById('resultado');
+                resultado.innerText = 'Error de conexión o del servidor.';
+                resultado.className = "error";
+                document.getElementById('ticket-details').style.display = 'none'; // Asegurar que se oculta en caso de error
+            });
+        }
+
+        const scanner = new Html5Qrcode("reader");
+        const config = { fps: 10, qrbox: 250 };
+
+        scanner.start(
+            { facingMode: "environment" },
+            config,
+            qrCodeMessage => {
+                scanner.pause();
+                enviarTicket(qrCodeMessage);
+                setTimeout(() => {
+                    scanner.resume();
+                }, 3000); // Reanuda el escáner después de 3 segundos
+            },
+            errorMessage => {
+                // console.log(`Error al escanear: ${errorMessage}`);
+            }
+        );
+    </script>
+</body>
+</html>
