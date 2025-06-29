@@ -1,1 +1,1 @@
-# Entradas-por-QR
+# Entradas por QR
