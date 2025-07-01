@@ -95,6 +95,7 @@ def checkout_simulado():
 
 
 
+
 @main.route('/pago_confirmado', methods=['POST'])
 def pago_confirmado():
     name = request.form['name']
@@ -128,7 +129,8 @@ def pago_confirmado():
             qr_code=qr_code_base64,
             ticket_code=ticket_code,
             transaction_id=transaction_id,
-            payment_method=payment_method
+            payment_method=payment_method,
+            user_id=current_user.id if current_user.is_authenticated else None  # <-- ASOCIA EL USUARIO
         )
         db.session.add(ticket)
         tickets_created.append(ticket)
@@ -189,7 +191,12 @@ def api_verificar_ticket():
         'ticket_info': ticket_details # Incluimos los detalles del ticket
     })
 
-@main.route('/verificar')
-def verificar_qr():
+    @main.route('/verificar')
+    def verificar_qr():
     return render_template('verificar.html')
 
+    @main.route('/mis_tickets')
+    @login_required
+    def mis_tickets():
+    tickets = Ticket.query.filter_by(user_id=current_user.id).all()
+    return render_template('mis_tickets.html', tickets=tickets)
