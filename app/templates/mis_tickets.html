@@ -1,0 +1,47 @@
+<!-- templates/mis_tickets.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Tickets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Mis Tickets</h1>
+    {% if tickets %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Código</th>
+                    <th>QR</th>
+                    <th>Usado</th>
+                    <th>Método de pago</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.event.name }}</td>
+                    <td>{{ ticket.ticket_code }}</td>
+                    <td>
+                        <img src="data:image/png;base64,{{ ticket.qr_code }}" alt="QR" width="75"/>
+                    </td>
+                    <td>
+                        {% if ticket.usado %}
+                            <span style="color: red;">Sí</span>
+                        {% else %}
+                            <span style="color: green;">No</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ ticket.payment_method }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tienes tickets comprados.</p>
+    {% endif %}
+    <a href="{{ url_for('main.index') }}">Volver al inicio</a>
+</body>
+</html>
