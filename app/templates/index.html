@@ -133,37 +133,37 @@
         <h2>Comprar Tickets</h2>
       </div>
       <div class="card-body">
-        <form method="POST" action="/checkout_simulado">
-          <div class="form-group">
-            <label for="name">Nombre Completo</label>
-            <div class="input-icon">
-              <i class="fas fa-user"></i>
-              <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required>
-            </div>
-          </div>
+        <form method="POST" action="{{ url_for('main.checkout') }}">
+  <div class="form-group">
+    <label for="name">Nombre Completo</label>
+    <div class="input-icon">
+      <i class="fas fa-user"></i>
+      <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required>
+    </div>
+  </div>
 
-          <div class="form-group">
-            <label for="event">Evento</label>
-            <div class="input-icon">
-              <i class="fas fa-ticket-alt"></i>
-              <select id="event" name="event" required>
-                {% for event in events %}
-                  <option value="{{ event.id }}">{{ event.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
+  <div class="form-group">
+    <label for="event">Evento</label>
+    <div class="input-icon">
+      <i class="fas fa-ticket-alt"></i>
+      <select id="event" name="event" required>
+        {% for event in events %}
+          <option value="{{ event.id }}">{{ event.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
 
-          <div class="form-group">
-            <label for="quantity">Cantidad de Tickets</label>
-            <div class="input-icon">
-              <i class="fas fa-hashtag"></i>
-              <input type="number" id="quantity" name="quantity" min="1" placeholder="Ej: 2" required>
-            </div>
-          </div>
-         <form method="POST" action="{{ url_for('main.checkout') }}">
-          <button type="submit">Ir al pago simulado</button>
-        </form>
+  <div class="form-group">
+    <label for="quantity">Cantidad de Tickets</label>
+    <div class="input-icon">
+      <i class="fas fa-hashtag"></i>
+      <input type="number" id="quantity" name="quantity" min="1" placeholder="Ej: 2" required>
+    </div>
+  </div>
+
+  <button type="submit">Ir al pago simulado</button>
+</form>
       </div>
     </div>
   </div>
