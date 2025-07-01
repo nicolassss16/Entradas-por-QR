@@ -161,7 +161,7 @@
               <input type="number" id="quantity" name="quantity" min="1" placeholder="Ej: 2" required>
             </div>
           </div>
-
+         <form method="POST" action="{{ url_for('main.checkout') }}">
           <button type="submit">Ir al pago simulado</button>
         </form>
       </div>
