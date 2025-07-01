@@ -69,17 +69,32 @@ def purchase_ticket():
 @main.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     if request.method == 'POST':
-        name = request.form['name']; event_id = request.form['event_id']; quantity = request.form['quantity']
-        event = Event.query.get(event_id)
+        name = request.form.get('name')
+        event_id = request.form.get('event')
+        quantity = request.form.get('quantity')
+
+        # Validar datos
+        if not name or not event_id or not quantity:
+            flash('Datos incompletos para el checkout.', 'error')
+            return redirect(url_for('main.index'))
+
         try:
             quantity = int(quantity)
-            assert quantity > 0 and event
-        except:
-            flash('Datos inválidos.', 'error')
+            if quantity <= 0:
+                raise ValueError
+        except ValueError:
+            flash('Cantidad inválida.', 'error')
             return redirect(url_for('main.index'))
-        return render_template('checkout.html', name=name, event=event, quantity=quantity)
-    return redirect(url_for('main.index'))
 
+        event = Event.query.get(event_id)
+        if not event:
+            flash('Evento no encontrado.', 'error')
+            return redirect(url_for('main.index'))
+
+        return render_template('checkout.html', name=name, event=event, quantity=quantity)
+
+    # Para GET podés redirigir o mostrar otro template
+    return redirect(url_for('main.index'))
 @main.route('/pago_confirmado', methods=['POST'])
 def pago_confirmado():
     name = request.form['name']
