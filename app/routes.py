@@ -19,6 +19,11 @@ def load_user(user_id):
 def index():
     events = Event.query.all()
     return render_template('index.html', events=events)
+@main.route('/mis_tickets')
+@login_required
+def mis_tickets():
+    tickets = Ticket.query.filter_by(user_id=current_user.id).all()
+    return render_template('mis_tickets.html', tickets=tickets)
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():
