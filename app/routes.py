@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from .models import db, Event, Ticket, User
 from . import login_manager
 import qrcode
@@ -10,11 +10,9 @@ from uuid import uuid4
 
 main = Blueprint('main', __name__)
 
-# Flask-Login: carga el usuario en sesión
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
 
 # --------------------------
 # Rutas públicas y usuario
@@ -46,6 +44,29 @@ def logout():
     flash('Sesión cerrada', 'success')
     return redirect(url_for('main.index'))
 
+@main.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if not username or not password:
+            flash('Todos los campos son obligatorios.', 'error')
+            return redirect(url_for('main.register'))
+
+        if User.query.filter_by(username=username).first():
+            flash('Este usuario ya está registrado.', 'error')
+            return redirect(url_for('main.register'))
+
+        hashed_password = generate_password_hash(password)
+        new_user = User(username=username, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('✅ Registro exitoso. Ahora podés iniciar sesión.', 'success')
+        return redirect(url_for('main.login'))
+
+    return render_template('register.html')
 
 # --------------------------
 # Compra de tickets
@@ -134,7 +155,6 @@ def ticket(ticket_code):
     ticket = Ticket.query.filter_by(ticket_code=ticket_code).first_or_404()
     return render_template('ticket.html', ticket=ticket)
 
-
 # --------------------------
 # Administración y staff
 # --------------------------
@@ -158,7 +178,6 @@ def add_event():
     else:
         flash('El nombre del evento es obligatorio', 'error')
     return redirect(url_for('main.admin'))
-
 
 # --------------------------
 # Verificación de tickets
@@ -199,7 +218,6 @@ def api_verificar_ticket():
         'ticket_info': ticket_details
     })
 
-
 # --------------------------
 # Tickets personales
 # --------------------------
@@ -209,3 +227,4 @@ def api_verificar_ticket():
 def mis_tickets():
     tickets = Ticket.query.filter_by(user_id=current_user.id).all()
     return render_template('mis_tickets.html', tickets=tickets)
+
