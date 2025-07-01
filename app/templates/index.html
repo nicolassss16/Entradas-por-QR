@@ -3,113 +3,123 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compra de Tickets</title>
-
-  <!-- Google Fonts -->
+  <title>QRPASS - Inicio</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
   <style>
-    /* Estilos igual que antes, no los repito para ahorrar espacio */
     body {
       font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #f0f2f5 0%, #e0e5ec 100%);
+      background: linear-gradient(135deg, #f0f2f5, #e0e5ec);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      margin: 0;
       padding: 20px;
       color: #333;
     }
-    .header { text-align: center; margin-bottom: 30px; }
-    .header h1 { font-size: 2.5rem; color: #4361ee; margin-bottom: 10px; font-weight: 700; }
-    .header p { font-size: 1.1rem; color: #4a5568; max-width: 600px; }
-    .card { background-color: white; width: 100%; max-width: 500px; border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 30px; }
-    .card-header { background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
-      color: white; padding: 20px; text-align: center; }
-    .card-header h2 { font-weight: 500; font-size: 1.5rem; }
-    .card-body { padding: 30px; }
-    .form-group { margin-bottom: 25px; position: relative; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #2d3748; font-size: 1rem; }
-    .input-icon { position: relative; }
-    .input-icon i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #718096;
-      font-size: 18px;
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
     }
-    .input-icon input, .input-icon select { padding-left: 40px; }
-    input[type="text"], input[type="number"], select {
-      width: 100%;
-      padding: 14px 16px 14px 40px;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 16px;
-      background-color: #f8fafc;
-      color: #1a202c;
+
+    .header h1 {
+      font-size: 2.5rem;
+      color: #4361ee;
+      margin-bottom: 10px;
+      font-weight: 700;
     }
-    input[type="text"]:focus, input[type="number"]:focus, select:focus {
-      border-color: #4361ee;
-      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
-      outline: none;
-      background-color: white;
+
+    .header p {
+      font-size: 1.1rem;
+      color: #4a5568;
     }
-    button {
-      background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
-      color: white;
-      padding: 16px;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: 500;
-      cursor: pointer;
-      width: 100%;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
     }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    }
+
     .alert {
       padding: 16px;
       margin-bottom: 25px;
       border-radius: 10px;
       font-size: 16px;
       text-align: center;
-      animation: fadeIn 0.5s ease;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+
     .success {
       background-color: #d1fae5;
       color: #065f46;
       border: 1px solid #34d399;
     }
+
     .error {
       background-color: #fee2e2;
       color: #b91c1c;
       border: 1px solid #f87171;
     }
-    .footer {
-      text-align: center;
-      color: #718096;
-      font-size: 14px;
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-top: 20px;
     }
-    .footer a {
-      color: #4361ee;
-      text-decoration: none;
+
+    .button-group a button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #4361ee, #3f37c9);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .button-group a button:hover {
+      transform: scale(1.03);
+    }
+
+    .form-card {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(135deg, #48bb78, #38a169);
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #888;
+      font-size: 14px;
     }
   </style>
 </head>
-
 <body>
 
   <div class="header">
@@ -118,8 +128,7 @@
   </div>
 
   <div class="container">
-
-    <!-- Mostrar mensajes flash -->
+    <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -128,43 +137,41 @@
       {% endif %}
     {% endwith %}
 
-    <div class="card">
-      <div class="card-header">
-        <h2>Comprar Tickets</h2>
-      </div>
-      <div class="card-body">
-        <form method="POST" action="{{ url_for('main.checkout') }}">
-  <div class="form-group">
-    <label for="name">Nombre Completo</label>
-    <div class="input-icon">
-      <i class="fas fa-user"></i>
-      <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required>
+    <!-- Formulario de Compra -->
+    <div class="form-card">
+      <h2 style="text-align:center;">Comprar Tickets</h2>
+      <form method="POST" action="{{ url_for('main.purchase_ticket') }}">
+        <div class="form-group">
+          <label for="name">Nombre completo</label>
+          <input type="text" id="name" name="name" placeholder="Ej: Juan Pérez" required>
+        </div>
+        <div class="form-group">
+          <label for="event">Evento</label>
+          <select id="event" name="event" required>
+            {% for event in events %}
+              <option value="{{ event.id }}">{{ event.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Cantidad</label>
+          <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+        </div>
+        <button type="submit">Ir al pago simulado</button>
+      </form>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="event">Evento</label>
-    <div class="input-icon">
-      <i class="fas fa-ticket-alt"></i>
-      <select id="event" name="event" required>
-        {% for event in events %}
-          <option value="{{ event.id }}">{{ event.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="quantity">Cantidad de Tickets</label>
-    <div class="input-icon">
-      <i class="fas fa-hashtag"></i>
-      <input type="number" id="quantity" name="quantity" min="1" placeholder="Ej: 2" required>
-    </div>
-  </div>
-
-  <button type="submit">Ir al pago simulado</button>
-</form>
-      </div>
+    <!-- Botones de navegación -->
+    <div class="button-group">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('main.mis_tickets') }}"><button>Mis Tickets</button></a>
+        <a href="{{ url_for('main.logout') }}"><button>Salir</button></a>
+        <a href="{{ url_for('main.admin') }}"><button>Panel Admin</button></a>
+      {% else %}
+        <a href="{{ url_for('main.login') }}"><button>Iniciar sesión</button></a>
+        <a href="{{ url_for('main.register') }}"><button>Registrarse</button></a>
+      {% endif %}
+      <a href="{{ url_for('main.verificar_qr') }}"><button>Verificar Ticket</button></a>
     </div>
   </div>
 
