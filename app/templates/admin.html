@@ -4,71 +4,137 @@
     <meta charset="UTF-8">
     <title>Panel Admin</title>
     <style>
+        /* Estilos Generales del Cuerpo */
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f6f8;
+            font-family: 'Segoe UI', sans-serif; /* Fuente moderna y limpia */
+            background-color: #f4f6f8; /* Un gris claro para el fondo */
             margin: 0;
             padding: 20px;
-            color: #333;
+            color: #333; /* Color de texto oscuro para buena legibilidad */
         }
 
+        /* Estilos de Títulos */
         h1, h2 {
-            color: #2c3e50;
+            color: #2c3e50; /* Un azul oscuro para los encabezados */
+            text-align: center; /* Centrar los títulos */
+            margin-bottom: 25px; /* Espacio debajo de los títulos */
+        }
+        
+        h1 {
+            margin-top: 20px; /* Espacio superior para el título principal */
         }
 
+        /* Estilos del Formulario */
         form {
-            background-color: #fff;
-            padding: 15px;
+            background-color: #fff; /* Fondo blanco para el formulario */
+            padding: 20px;
             margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px; /* Bordes ligeramente redondeados */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sutil sombra */
+            display: flex; /* Usar flexbox para alinear elementos */
+            justify-content: center; /* Centrar el contenido horizontalmente */
+            align-items: center; /* Alinear verticalmente */
+            flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas pequeñas */
+            gap: 15px; /* Espacio entre los elementos del formulario */
         }
 
         input[type="text"] {
-            padding: 10px;
-            font-size: 14px;
+            padding: 12px;
+            font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 250px;
+            width: 100%; /* Ocupar el 100% del ancho del contenedor */
+            max-width: 300px; /* Ancho máximo para el campo de texto */
+            box-sizing: border-box; /* Incluir padding y border en el width */
         }
 
         button {
-            background-color: #3498db;
+            background-color: #3498db; /* Un azul vibrante */
             color: #fff;
             border: none;
-            padding: 10px 15px;
-            font-size: 14px;
+            padding: 12px 20px;
+            font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
-            margin-left: 10px;
+            transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
         }
 
         button:hover {
-            background-color: #2980b9;
+            background-color: #2980b9; /* Azul más oscuro al pasar el ratón */
         }
 
+        /* Estilos de Listas */
         ul {
-            list-style: none;
+            list-style: none; /* Quitar los puntos de la lista */
             padding: 0;
+            margin: 0 auto; /* Centrar la lista */
+            max-width: 800px; /* Ancho máximo para las listas */
         }
 
         li {
             background-color: #fff;
-            margin: 8px 0;
-            padding: 12px;
-            border-left: 5px solid #3498db;
+            margin: 10px 0;
+            padding: 15px;
+            border-left: 5px solid #3498db; /* Borde azul distintivo a la izquierda */
             border-radius: 5px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex; /* Usar flexbox para el contenido de la lista */
+            justify-content: space-between; /* Espaciar el contenido */
+            align-items: center; /* Alinear verticalmente */
+            flex-wrap: wrap; /* Permitir que el contenido se envuelva */
+            gap: 10px; /* Espacio entre los elementos dentro del li */
+            font-size: 1.05em; /* Fuente ligeramente más grande */
         }
 
+        /* Estilos para el estado de "Usado" */
         .usado {
-            color: green;
+            color: #28a745; /* Verde para "Usado" */
             font-weight: bold;
+            flex-shrink: 0; /* Evitar que se encoja */
         }
 
         .no-usado {
-            color: red;
+            color: #dc3545; /* Rojo para "No usado" */
             font-weight: bold;
+            flex-shrink: 0; /* Evitar que se encoja */
+        }
+
+        /* Estilos para el texto de los tickets en lista */
+        li span {
+            margin-right: 5px; /* Pequeño espacio entre los elementos de texto */
+        }
+
+        /* Responsividad para pantallas pequeñas */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px; /* Reducir el padding en pantallas pequeñas */
+            }
+
+            form {
+                flex-direction: column; /* Apilar elementos del formulario en vertical */
+                align-items: stretch; /* Estirar elementos para ocupar el ancho */
+            }
+
+            input[type="text"] {
+                max-width: 100%; /* Ocupar el 100% del ancho disponible */
+            }
+
+            li {
+                flex-direction: column; /* Apilar elementos de la lista en vertical */
+                align-items: flex-start; /* Alinear a la izquierda */
+                gap: 5px; /* Reducir espacio entre elementos apilados */
+            }
+            
+            li span {
+                margin-right: 0; /* Eliminar margen derecho */
+                width: 100%; /* Ocupar todo el ancho para cada detalle */
+            }
+
+            /* Asegurarse de que el estado "Usado/No usado" también se ajuste */
+            .usado, .no-usado {
+                text-align: left; /* Alinear a la izquierda cuando se apila */
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -83,7 +149,9 @@
     <h2>Eventos</h2>
     <ul>
         {% for event in events %}
-            <li>{{ event.name }}</li>
+            <li>
+                <span>{{ event.name }}</span>
+            </li>
         {% endfor %}
     </ul>
 
@@ -91,7 +159,9 @@
     <ul>
         {% for ticket in tickets %}
             <li>
-                {{ ticket.name }} - Evento: {{ ticket.event_id }} - Cantidad: {{ ticket.quantity }} - 
+                <span>{{ ticket.name }}</span>
+                <span>Evento: {{ ticket.event_id }}</span>
+                <span>Cantidad: {{ ticket.quantity }}</span>
                 <span class="{{ 'usado' if ticket.usado else 'no-usado' }}">
                     {{ 'Usado' if ticket.usado else 'No usado' }}
                 </span>
