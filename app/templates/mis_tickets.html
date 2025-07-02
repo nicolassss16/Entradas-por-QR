@@ -1,10 +1,155 @@
-<!-- templates/mis_tickets.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Mis Tickets</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Heading Styling */
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden; /* Ensures rounded corners apply to content */
+        }
+
+        /* Table Header Styling */
+        thead th {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #0056b3;
+        }
+
+        /* Table Body Cell Styling */
+        tbody td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        /* Alternate Row Styling for better readability */
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Hover effect on table rows */
+        tbody tr:hover {
+            background-color: #e9e9e9;
+            cursor: pointer;
+        }
+
+        /* Specific styling for the 'Usado' (Used) status */
+        span.red {
+            color: #dc3545; /* Bootstrap red */
+            font-weight: bold;
+        }
+
+        span.green {
+            color: #28a745; /* Bootstrap green */
+            font-weight: bold;
+        }
+
+        /* Styling for messages when no tickets are found */
+        p {
+            text-align: center;
+            font-size: 1.1em;
+            color: #666;
+            margin-top: 50px;
+        }
+
+        /* Link Styling */
+        a {
+            display: block; /* Makes the link take full width for easier clicking */
+            text-align: center;
+            margin-top: 40px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 10px 20px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: fit-content; /* Adjusts width to content */
+            margin-left: auto; /* Centers the block link */
+            margin-right: auto; /* Centers the block link */
+        }
+
+        a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tbody tr {
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            }
+
+            tbody td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+
+            tbody td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 45%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+            }
+
+            /* Specific styling for QR image in table in responsive view */
+            td img {
+                margin: 0; /* Remove auto margin from wider screens */
+                float: right; /* Align QR to the right */
+            }
+        }
+
+        /* Specific styling for QR image in table (general) */
+        td img {
+            display: block; /* Ensures it sits on its own line for better spacing */
+            margin: 0 auto; /* Centers the QR code if its column is wider */
+        }
+    </style>
 </head>
 <body>
     <h1>Mis Tickets</h1>
@@ -22,19 +167,19 @@
             <tbody>
             {% for ticket in tickets %}
                 <tr>
-                    <td>{{ ticket.event.name }}</td>
-                    <td>{{ ticket.ticket_code }}</td>
-                    <td>
+                    <td data-label="Evento">{{ ticket.event.name }}</td>
+                    <td data-label="Código">{{ ticket.ticket_code }}</td>
+                    <td data-label="QR">
                         <img src="data:image/png;base64,{{ ticket.qr_code }}" alt="QR" width="75"/>
                     </td>
-                    <td>
+                    <td data-label="Usado">
                         {% if ticket.usado %}
-                            <span style="color: red;">Sí</span>
+                            <span class="red">Sí</span>
                         {% else %}
-                            <span style="color: green;">No</span>
+                            <span class="green">No</span>
                         {% endif %}
                     </td>
-                    <td>{{ ticket.payment_method }}</td>
+                    <td data-label="Método de pago">{{ ticket.payment_method }}</td>
                 </tr>
             {% endfor %}
             </tbody>
