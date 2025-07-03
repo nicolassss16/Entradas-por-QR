@@ -1,312 +1,356 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QRPASS - Inicio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QRPASS - Inicio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <style>
-   /* General Body and Page Layout */
-body {
-    font-family: 'Roboto', sans-serif; /* Use Roboto font from Google Fonts */
-    background: linear-gradient(135deg, #f0f2f5, #e0e5ec); /* Soft gradient background */
-    min-height: 100vh; /* Ensure body takes full viewport height */
-    margin: 0;
-    padding: 20px; /* Padding around the entire page content */
-    color: #333; /* Dark grey for primary text */
-    line-height: 1.6; /* Improved readability for paragraphs */
-    display: flex; /* Use flexbox for overall page layout */
-    flex-direction: column; /* Stack content vertically */
-    justify-content: space-between; /* Push header/footer to ends */
-}
+    <style>
+        /* General Body and Page Layout */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f0f2f5, #e0e5ec);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-/* Header Section */
-.header {
-    text-align: center;
-    margin-bottom: 30px;
-    padding-top: 20px; /* Add some padding at the top */
-}
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
 
-.header h1 {
-    font-size: 2.8rem; /* Larger font size for main title */
-    color: #4361ee; /* A vibrant blue for the brand name */
-    margin-bottom: 8px; /* Space between title and tagline */
-    font-weight: 700; /* Bold font weight */
-    letter-spacing: 1px; /* Slight letter spacing for style */
-}
+        .header h1 {
+            font-size: 2.8rem;
+            color: #4361ee;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
 
-.header p {
-    font-size: 1.1rem;
-    color: #4a5568; /* Slightly darker grey for tagline */
-    max-width: 500px; /* Limit width of tagline */
-    margin: 0 auto; /* Center the tagline */
-}
+        .header p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            max-width: 500px;
+            margin: 0 auto;
+        }
 
-/* Main Content Container */
-.container {
-    max-width: 650px; /* Increased max-width for better form and button group spacing */
-    margin: 0 auto; /* Center the container horizontally */
-    flex-grow: 1; /* Allow container to grow and push footer down */
-    width: 100%; /* Ensure it takes full width within max-width */
-}
+        /* Main Content Container */
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            flex-grow: 1;
+            width: 100%;
+        }
 
-/* Alert Messages (Flash Messages) */
-.alert {
-    padding: 16px;
-    margin-bottom: 25px;
-    border-radius: 10px;
-    font-size: 16px;
-    text-align: center;
-    font-weight: 500; /* Slightly bolder text for alerts */
-    display: flex; /* Use flexbox for icon and text alignment */
-    align-items: center; /* Vertically align content */
-    justify-content: center; /* Horizontally center content */
-    gap: 10px; /* Space between icon and text */
-}
+        /* Alert Messages (Flash Messages) */
+        .alert {
+            padding: 16px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            /* Added for accessibility */
+            position: relative; /* Needed for positioning the close button */
+        }
 
-.success {
-    background-color: #d1fae5; /* Light green background */
-    color: #065f46; /* Dark green text */
-    border: 1px solid #34d399; /* Green border */
-}
+        .alert .fas { /* Style for alert icons */
+            font-size: 1.2em;
+        }
 
-.error {
-    background-color: #fee2e2; /* Light red background */
-    color: #b91c1c; /* Dark red text */
-    border: 1px solid #f87171; /* Red border */
-}
+        .alert-close { /* Style for the close button */
+            background: none;
+            border: none;
+            color: inherit; /* Inherit color from the alert type */
+            font-size: 1.2em;
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 5px;
+        }
 
-/* Form Card Styling */
-.form-card {
-    background-color: white;
-    border-radius: 16px; /* More rounded corners for a softer look */
-    padding: 30px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
-    margin-bottom: 30px; /* Space below the form card */
-}
+        .alert-close:hover {
+            opacity: 0.8;
+        }
 
-.form-card h2 {
-    text-align: center;
-    color: #4a5568; /* Match subheading color to tagline */
-    margin-top: 0; /* Remove default top margin */
-    margin-bottom: 25px; /* Space below form heading */
-    font-size: 1.8rem; /* Slightly larger heading */
-}
+        .success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #34d399;
+        }
 
-.form-group {
-    margin-bottom: 20px;
-}
+        .error {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #f87171;
+        }
 
-label {
-    font-weight: 500; /* Medium font weight for labels */
-    display: block; /* Make labels block-level for better spacing */
-    margin-bottom: 8px; /* Space between label and input */
-    color: #4a5568; /* Consistent label color */
-}
+        /* Form Card Styling */
+        .form-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
 
-input,
-select {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px; /* Slightly more rounded inputs */
-    border: 1px solid #cce; /* Softer border color */
-    font-size: 16px; /* Consistent font size */
-    box-sizing: border-box; /* Include padding and border in element's total width */
-    transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transition on focus */
-}
+        .form-card h2 {
+            text-align: center;
+            color: #4a5568;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
 
-input:focus,
-select:focus {
-    outline: none; /* Remove default focus outline */
-    border-color: #4361ee; /* Highlight border on focus */
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2); /* Soft blue shadow on focus */
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-/* Submit Button Specific Style (for form) */
-button[type="submit"] {
-    display: block; /* Make submit button full width */
-    width: 100%;
-    padding: 15px; /* More padding for a larger button */
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #48bb78, #38a169); /* Green gradient for submit */
-    color: white;
-    font-size: 18px; /* Larger font size */
-    font-weight: 700; /* Bold text */
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease; /* Smooth transitions */
-    box-shadow: 0 5px 15px rgba(56, 161, 105, 0.3); /* Shadow for green button */
-}
+        label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
 
-button[type="submit"]:hover {
-    background: linear-gradient(135deg, #38a169, #2f855a); /* Darker green on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-    box-shadow: 0 7px 20px rgba(56, 161, 105, 0.4);
-}
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #cce;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
 
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
 
-/* Button Group (Navigation Buttons) */
-.button-group {
-    display: flex;
-    justify-content: center; /* Center the buttons */
-    flex-wrap: wrap; /* Allow buttons to wrap to the next line */
-    gap: 15px; /* More space between buttons */
-    margin-top: 20px;
-    margin-bottom: 30px; /* Space below the button group */
-}
+        /* Submit Button Specific Style (for form) */
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(56, 161, 105, 0.3);
+        }
 
-.button-group a {
-    text-decoration: none; /* Remove underline from links */
-    display: block; /* Make anchor tag behave like a block */
-}
+        button[type="submit"]:hover {
+            background: linear-gradient(135deg, #38a169, #2f855a);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(56, 161, 105, 0.4);
+        }
 
-.button-group button {
-    padding: 14px 25px; /* Generous padding for buttons */
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #4361ee, #3f37c9); /* Blue gradient */
-    color: white;
-    font-size: 16px;
-    font-weight: 500; /* Medium font weight */
-    cursor: pointer;
-    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
-    min-width: 150px; /* Ensure buttons have a minimum width */
-    box-shadow: 0 4px 12px rgba(63, 55, 201, 0.2); /* Shadow for blue buttons */
-}
+        /* Button Group (Navigation Buttons) */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
 
-.button-group button:hover {
-    transform: translateY(-2px); /* Slight lift effect */
-    background: linear-gradient(135deg, #3f37c9, #3a32b9); /* Darker blue on hover */
-    box-shadow: 0 6px 15px rgba(63, 55, 201, 0.3);
-}
+        .button-group a {
+            text-decoration: none;
+            display: block; /* Ensures the button takes up the full link area */
+        }
 
-/* Footer Styling */
-.footer {
-    margin-top: 40px;
-    text-align: center;
-    color: #888; /* Lighter grey for footer text */
-    font-size: 0.9em; /* Slightly smaller font size */
-    padding-bottom: 20px; /* Padding at the bottom */
-}
+        .button-group button {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4361ee, #3f37c9);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            min-width: 150px;
+            box-shadow: 0 4px 12px rgba(63, 55, 201, 0.2);
+            display: flex; /* For icon alignment */
+            align-items: center; /* Vertically align icon and text */
+            justify-content: center; /* Center content horizontally */
+            gap: 8px; /* Space between icon and text */
+        }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    body {
-        padding: 15px; /* Reduce overall padding on smaller screens */
-    }
+        .button-group button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #3f37c9, #3a32b9);
+            box-shadow: 0 6px 15px rgba(63, 55, 201, 0.3);
+        }
 
-    .header h1 {
-        font-size: 2.2rem; /* Adjust header font size for smaller screens */
-    }
+        /* Footer Styling */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #888;
+            font-size: 0.9em;
+            padding-bottom: 20px;
+        }
 
-    .header p {
-        font-size: 1rem;
-    }
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
 
-    .form-card {
-        padding: 20px; /* Reduce form card padding */
-    }
+            .header h1 {
+                font-size: 2.2rem;
+            }
 
-    .form-card h2 {
-        font-size: 1.5rem; /* Adjust form heading size */
-    }
+            .header p {
+                font-size: 1rem;
+            }
 
-    .button-group {
-        flex-direction: column; /* Stack buttons vertically on small screens */
-        align-items: stretch; /* Stretch buttons to full width */
-    }
+            .form-card {
+                padding: 20px;
+            }
 
-    .button-group button {
-        width: 100%; /* Make buttons take full width when stacked */
-        min-width: unset; /* Remove min-width restriction */
-    }
-}
+            .form-card h2 {
+                font-size: 1.5rem;
+            }
 
-@media (max-width: 480px) {
-    body {
-        padding: 10px; /* Further reduce padding on very small screens */
-    }
+            .button-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
 
-    .header h1 {
-        font-size: 2rem;
-    }
+            .button-group button {
+                width: 100%;
+                min-width: unset;
+            }
+        }
 
-    .header p {
-        font-size: 0.95rem;
-    }
-    
-    .alert {
-        font-size: 15px; /* Smaller font for alerts */
-        padding: 12px;
-    }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
 
-    input, select, .button-group button, button[type="submit"] {
-        font-size: 15px; /* Slightly smaller font for inputs and buttons */
-        padding: 12px; /* Adjust padding */
-    }
-}
-  </style>
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 0.95rem;
+            }
+
+            .alert {
+                font-size: 15px;
+                padding: 12px;
+                flex-direction: column; /* Stack icon and text on very small screens */
+            }
+
+            .alert-close { /* Adjust close button position for stacked alert */
+                position: static;
+                transform: none;
+                margin-top: 5px;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            select,
+            .button-group button,
+            button[type="submit"] {
+                font-size: 15px;
+                padding: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>QRPASS</h1>
-    <p>Compra tus tickets de forma rápida y segura</p>
-  </div>
-
-  <div class="container">
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert {{ category }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-    <!-- Formulario de Compra -->
-    <div class="form-card">
-      <h2 style="text-align:center;">Comprar Tickets</h2>
-      <form method="POST" action="{{ url_for('main.purchase_ticket') }}">
-        <div class="form-group">
-          <label for="name">Nombre completo</label>
-          <input type="text" id="name" name="name" placeholder="Ej: Juan Pérez" required>
-        </div>
-        <div class="form-group">
-          <label for="event">Evento</label>
-          <select id="event" name="event" required>
-            {% for event in events %}
-              <option value="{{ event.id }}">{{ event.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="quantity">Cantidad</label>
-          <input type="number" id="quantity" name="quantity" min="1" value="1" required>
-        </div>
-        <button type="submit">Ir al pago simulado</button>
-      </form>
+    <div class="header">
+        <h1>QRPASS</h1>
+        <p>Compra tus tickets de forma rápida y segura</p>
     </div>
 
-    <!-- Botones de navegación -->
-    <div class="button-group">
-      {% if current_user.is_authenticated %}
-        <a href="{{ url_for('main.mis_tickets') }}"><button>Mis Tickets</button></a>
-        <a href="{{ url_for('main.logout') }}"><button>Salir</button></a>
-        <a href="{{ url_for('main.admin') }}"><button>Panel Admin</button></a>
-      {% else %}
-        <a href="{{ url_for('main.login') }}"><button>Iniciar sesión</button></a>
-        <a href="{{ url_for('main.register') }}"><button>Registrarse</button></a>
-      {% endif %}
-      <a href="{{ url_for('main.verificar_qr') }}"><button>Verificar Ticket</button></a>
-    </div>
-  </div>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}" role="alert">
+                        {% if category == 'success' %}
+                            <i class="fas fa-check-circle"></i>
+                        {% elif category == 'error' %}
+                            <i class="fas fa-times-circle"></i>
+                        {% endif %}
+                        <span>{{ message }}</span>
+                        <button type="button" class="alert-close" aria-label="Cerrar alerta" onclick="this.parentElement.style.display='none';">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-  <div class="footer">
-    <p>© 2025 QRPASS. Todos los derechos reservados.</p>
-  </div>
+        <div class="form-card">
+            <h2>Comprar Tickets</h2>
+            <form method="POST" action="{{ url_for('main.purchase_ticket') }}">
+                <div class="form-group">
+                    <label for="name">Nombre completo</label>
+                    <input type="text" id="name" name="name" placeholder="Ej: Juan Pérez" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="event">Evento</label>
+                    <select id="event" name="event" required>
+                        {% for event in events %}
+                            <option value="{{ event.id }}">{{ event.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Cantidad</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" required inputmode="numeric" pattern="[0-9]*">
+                </div>
+                <button type="submit">Ir al pago simulado <i class="fas fa-arrow-right"></i></button>
+            </form>
+        </div>
+
+        <div class="button-group">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('main.mis_tickets') }}" aria-label="Ver mis tickets"><button><i class="fas fa-ticket-alt"></i> Mis Tickets</button></a>
+                <a href="{{ url_for('main.logout') }}" aria-label="Cerrar sesión"><button><i class="fas fa-sign-out-alt"></i> Salir</button></a>
+                <a href="{{ url_for('main.admin') }}" aria-label="Acceder al panel de administración"><button><i class="fas fa-user-shield"></i> Panel Admin</button></a>
+            {% else %}
+                <a href="{{ url_for('main.login') }}" aria-label="Iniciar sesión"><button><i class="fas fa-sign-in-alt"></i> Iniciar sesión</button></a>
+                <a href="{{ url_for('main.register') }}" aria-label="Registrarse para una nueva cuenta"><button><i class="fas fa-user-plus"></i> Registrarse</button></a>
+            {% endif %}
+            <a href="{{ url_for('main.verificar_qr') }}" aria-label="Verificar la validez de un ticket"><button><i class="fas fa-qrcode"></i> Verificar Ticket</button></a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 QRPASS. Todos los derechos reservados.</p>
+    </div>
 
 </body>
 </html>
