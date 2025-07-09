@@ -141,32 +141,57 @@
 <body>
     <h1>Panel de Administración</h1>
 
-    <form method="POST" action="/admin/add_event">
-        <input type="text" name="name" placeholder="Nombre del evento" required>
+    <!-- Mensajes de éxito/error para el usuario -->
+    {% if success_message %}
+        <div style="background:#d4edda;color:#155724;padding:10px;border-radius:5px;margin-bottom:20px;">
+            {{ success_message }}
+        </div>
+    {% endif %}
+    {% if error_message %}
+        <div style="background:#f8d7da;color:#721c24;padding:10px;border-radius:5px;margin-bottom:20px;">
+            {{ error_message }}
+        </div>
+    {% endif %}
+
+    <form method="POST" action="/admin/add_event" role="form" aria-label="Agregar evento">
+        <label for="event_name" style="display:none;">Nombre del evento</label>
+        <input id="event_name" type="text" name="name" placeholder="Nombre del evento" required>
         <button type="submit">Agregar evento</button>
     </form>
 
     <h2>Eventos</h2>
-    <ul>
-        {% for event in events %}
-            <li>
-                <span>{{ event.name }}</span>
-            </li>
-        {% endfor %}
+    <ul aria-live="polite">
+        {% if events|length == 0 %}
+            <li style="text-align:center;color:#888;">Sin eventos registrados.</li>
+        {% else %}
+            {% for event in events %}
+                <li>
+                    <span>{{ event.name }}</span>
+                </li>
+            {% endfor %}
+        {% endif %}
     </ul>
 
     <h2>Tickets</h2>
-    <ul>
-        {% for ticket in tickets %}
-            <li>
-                <span>{{ ticket.name }}</span>
-                <span>Evento: {{ ticket.event_id }}</span>
-                <span>Cantidad: {{ ticket.quantity }}</span>
-                <span class="{{ 'usado' if ticket.usado else 'no-usado' }}">
-                    {{ 'Usado' if ticket.usado else 'No usado' }}
-                </span>
-            </li>
-        {% endfor %}
+    <ul aria-live="polite">
+        {% if tickets|length == 0 %}
+            <li style="text-align:center;color:#888;">Sin tickets registrados.</li>
+        {% else %}
+            {% for ticket in tickets %}
+                <li>
+                    <span>{{ ticket.name }}</span>
+                    <span>
+                        Evento: 
+                        {% set event = events|selectattr('id', 'equalto', ticket.event_id)|first %}
+                        {{ event.name if event else ticket.event_id }}
+                    </span>
+                    <span>Cantidad: {{ ticket.quantity }}</span>
+                    <span class="{{ 'usado' if ticket.usado else 'no-usado' }}">
+                        {{ 'Usado' if ticket.usado else 'No usado' }}
+                    </span>
+                </li>
+            {% endfor %}
+        {% endif %}
     </ul>
 </body>
 </html>
