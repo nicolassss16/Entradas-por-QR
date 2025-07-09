@@ -8,302 +8,251 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <style>
-        /* General Body and Page Layout */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3f37c9;
+            --success: #48bb78;
+            --success-dark: #38a169;
+            --danger: #b91c1c;
+            --danger-bg: #fee2e2;
+            --success-bg: #d1fae5;
+            --gray: #4a5568;
+            --gray-light: #f0f2f5;
+        }
+
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #f0f2f5, #e0e5ec);
+            background: linear-gradient(135deg, var(--gray-light), #e0e5ec);
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            color: #333;
-            line-height: 1.6;
+            color: #222;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
-        /* Header Section */
-        .header {
+        header {
             text-align: center;
             margin-bottom: 30px;
             padding-top: 20px;
         }
 
-        .header h1 {
+        header h1 {
             font-size: 2.8rem;
-            color: #4361ee;
+            color: var(--primary);
             margin-bottom: 8px;
             font-weight: 700;
             letter-spacing: 1px;
         }
 
-        .header p {
+        header p {
             font-size: 1.1rem;
-            color: #4a5568;
+            color: var(--gray);
             max-width: 500px;
             margin: 0 auto;
         }
 
-        /* Main Content Container */
-        .container {
+        main {
             max-width: 650px;
             margin: 0 auto;
-            flex-grow: 1;
             width: 100%;
+            flex-grow: 1;
         }
 
-        /* Alert Messages (Flash Messages) */
+        /* Alert Messages */
         .alert {
-            padding: 16px;
+            padding: 16px 50px 16px 16px;
             margin-bottom: 25px;
             border-radius: 10px;
             font-size: 16px;
-            text-align: center;
             font-weight: 500;
+            text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            /* Added for accessibility */
-            position: relative; /* Needed for positioning the close button */
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            animation: fadeIn 0.7s;
         }
-
-        .alert .fas { /* Style for alert icons */
-            font-size: 1.2em;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px);}
+            to { opacity: 1; transform: translateY(0);}
         }
-
-        .alert-close { /* Style for the close button */
+        .alert .fas { font-size: 1.3em; }
+        .alert-close {
             background: none;
             border: none;
-            color: inherit; /* Inherit color from the alert type */
-            font-size: 1.2em;
+            color: inherit;
+            font-size: 1.5em;
             cursor: pointer;
             position: absolute;
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
             padding: 5px;
+            line-height: 1;
         }
-
-        .alert-close:hover {
-            opacity: 0.8;
+        .alert.success {
+            background-color: var(--success-bg);
+            color: var(--success-dark);
+            border: 1px solid var(--success);
         }
-
-        .success {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 1px solid #34d399;
-        }
-
-        .error {
-            background-color: #fee2e2;
-            color: #b91c1c;
+        .alert.error {
+            background-color: var(--danger-bg);
+            color: var(--danger);
             border: 1px solid #f87171;
         }
 
-        /* Form Card Styling */
+        /* Card Form */
         .form-card {
-            background-color: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            background: #fff;
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.09);
             margin-bottom: 30px;
+            transition: box-shadow 0.2s;
         }
-
+        .form-card:hover {
+            box-shadow: 0 14px 32px rgba(67,97,238,0.10);
+        }
         .form-card h2 {
             text-align: center;
-            color: #4a5568;
-            margin-top: 0;
-            margin-bottom: 25px;
+            color: var(--gray);
+            margin: 0 0 25px 0;
             font-size: 1.8rem;
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         label {
             font-weight: 500;
-            display: block;
             margin-bottom: 8px;
-            color: #4a5568;
+            color: var(--gray);
+            display: block;
         }
-
-        input[type="text"],
-        input[type="number"],
-        select {
+        input[type="text"], input[type="number"], select {
             width: 100%;
             padding: 12px;
             border-radius: 8px;
             border: 1px solid #cce;
             font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #f8fafc;
         }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus {
+        input:focus, select:focus {
             outline: none;
-            border-color: #4361ee;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67,97,238,0.13);
         }
 
-        /* Submit Button Specific Style (for form) */
+        /* Submit Button */
         button[type="submit"] {
-            display: block;
             width: 100%;
             padding: 15px;
             border: none;
             border-radius: 10px;
-            background: linear-gradient(135deg, #48bb78, #38a169);
+            background: linear-gradient(135deg, var(--success), var(--success-dark));
             color: white;
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(56, 161, 105, 0.3);
+            transition: background 0.3s, transform 0.15s;
+            box-shadow: 0 5px 15px rgba(56,161,105,0.24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-
         button[type="submit"]:hover {
-            background: linear-gradient(135deg, #38a169, #2f855a);
-            transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(56, 161, 105, 0.4);
+            background: linear-gradient(135deg, var(--success-dark), #2f855a);
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 7px 20px rgba(56,161,105,0.26);
         }
 
-        /* Button Group (Navigation Buttons) */
-        .button-group {
+        /* Navigation Buttons */
+        nav.button-group {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
-            margin-top: 20px;
-            margin-bottom: 30px;
+            margin: 28px 0 30px 0;
         }
-
-        .button-group a {
+        nav.button-group a {
             text-decoration: none;
-            display: block; /* Ensures the button takes up the full link area */
+            flex: 1 1 120px;
         }
-
-        .button-group button {
-            padding: 14px 25px;
+        nav.button-group button {
+            width: 100%;
+            padding: 14px 0;
             border: none;
             border-radius: 10px;
-            background: linear-gradient(135deg, #4361ee, #3f37c9);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            min-width: 150px;
-            box-shadow: 0 4px 12px rgba(63, 55, 201, 0.2);
-            display: flex; /* For icon alignment */
-            align-items: center; /* Vertically align icon and text */
-            justify-content: center; /* Center content horizontally */
-            gap: 8px; /* Space between icon and text */
+            transition: background 0.2s, transform 0.11s;
+            box-shadow: 0 4px 12px rgba(63,55,201,0.17);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        nav.button-group button:hover, nav.button-group button:focus {
+            background: linear-gradient(135deg, var(--primary-dark), #3a32b9);
+            transform: translateY(-2px) scale(1.01);
+            outline: 2px solid #b3bcf7;
         }
 
-        .button-group button:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #3f37c9, #3a32b9);
-            box-shadow: 0 6px 15px rgba(63, 55, 201, 0.3);
-        }
-
-        /* Footer Styling */
-        .footer {
+        /* Footer */
+        footer {
             margin-top: 40px;
             text-align: center;
             color: #888;
-            font-size: 0.9em;
+            font-size: 0.97em;
             padding-bottom: 20px;
         }
 
         /* Responsive Adjustments */
         @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-
-            .header h1 {
-                font-size: 2.2rem;
-            }
-
-            .header p {
-                font-size: 1rem;
-            }
-
-            .form-card {
-                padding: 20px;
-            }
-
-            .form-card h2 {
-                font-size: 1.5rem;
-            }
-
-            .button-group {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .button-group button {
-                width: 100%;
-                min-width: unset;
-            }
+            body { padding: 12px; }
+            header h1 { font-size: 2.2rem; }
+            .form-card { padding: 20px; }
+            .form-card h2 { font-size: 1.5rem; }
+            nav.button-group { flex-direction: column; gap: 10px; }
         }
-
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .header p {
-                font-size: 0.95rem;
-            }
-
-            .alert {
-                font-size: 15px;
-                padding: 12px;
-                flex-direction: column; /* Stack icon and text on very small screens */
-            }
-
-            .alert-close { /* Adjust close button position for stacked alert */
-                position: static;
-                transform: none;
-                margin-top: 5px;
-            }
-
-            input[type="text"],
-            input[type="number"],
-            select,
-            .button-group button,
-            button[type="submit"] {
-                font-size: 15px;
-                padding: 12px;
-            }
+            body { padding: 7px; }
+            header h1 { font-size: 2rem; }
+            .form-card { padding: 12px; }
+            .alert { font-size: 15px; padding: 12px; flex-direction: column; }
+            .alert-close { position: static; margin-top: 5px; transform: none; }
+            input, select, button, nav.button-group button { font-size: 15px; padding: 11px; }
         }
     </style>
 </head>
 <body>
-
-    <div class="header">
+    <header>
         <h1>QRPASS</h1>
         <p>Compra tus tickets de forma rápida y segura</p>
-    </div>
-
-    <div class="container">
+    </header>
+    <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert {{ category }}" role="alert">
+                    <div class="alert {{ category }}" role="alert" aria-live="assertive">
                         {% if category == 'success' %}
-                            <i class="fas fa-check-circle"></i>
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>
                         {% elif category == 'error' %}
-                            <i class="fas fa-times-circle"></i>
+                            <i class="fas fa-times-circle" aria-hidden="true"></i>
                         {% endif %}
                         <span>{{ message }}</span>
                         <button type="button" class="alert-close" aria-label="Cerrar alerta" onclick="this.parentElement.style.display='none';">&times;</button>
@@ -312,9 +261,9 @@
             {% endif %}
         {% endwith %}
 
-        <div class="form-card">
+        <section class="form-card" aria-label="Formulario de compra de tickets">
             <h2>Comprar Tickets</h2>
-            <form method="POST" action="{{ url_for('main.purchase_ticket') }}">
+            <form method="POST" action="{{ url_for('main.purchase_ticket') }}" autocomplete="on">
                 <div class="form-group">
                     <label for="name">Nombre completo</label>
                     <input type="text" id="name" name="name" placeholder="Ej: Juan Pérez" required autocomplete="name">
@@ -329,28 +278,42 @@
                 </div>
                 <div class="form-group">
                     <label for="quantity">Cantidad</label>
-                    <input type="number" id="quantity" name="quantity" min="1" value="1" required inputmode="numeric" pattern="[0-9]*">
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" required inputmode="numeric" pattern="[0-9]*" aria-label="Cantidad de tickets">
                 </div>
-                <button type="submit">Ir al pago simulado <i class="fas fa-arrow-right"></i></button>
+                <button type="submit" aria-label="Ir al pago simulado">
+                    Ir al pago simulado <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </button>
             </form>
-        </div>
+        </section>
 
-        <div class="button-group">
+        <nav class="button-group" aria-label="Opciones de navegación">
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('main.mis_tickets') }}" aria-label="Ver mis tickets"><button><i class="fas fa-ticket-alt"></i> Mis Tickets</button></a>
-                <a href="{{ url_for('main.logout') }}" aria-label="Cerrar sesión"><button><i class="fas fa-sign-out-alt"></i> Salir</button></a>
-                <a href="{{ url_for('main.admin') }}" aria-label="Acceder al panel de administración"><button><i class="fas fa-user-shield"></i> Panel Admin</button></a>
+                <a href="{{ url_for('main.mis_tickets') }}" aria-label="Ver mis tickets">
+                    <button type="button"><i class="fas fa-ticket-alt"></i> Mis Tickets</button>
+                </a>
+                <a href="{{ url_for('main.logout') }}" aria-label="Cerrar sesión">
+                    <button type="button"><i class="fas fa-sign-out-alt"></i> Salir</button>
+                </a>
+                <a href="{{ url_for('main.admin') }}" aria-label="Acceder al panel de administración">
+                    <button type="button"><i class="fas fa-user-shield"></i> Panel Admin</button>
+                </a>
             {% else %}
-                <a href="{{ url_for('main.login') }}" aria-label="Iniciar sesión"><button><i class="fas fa-sign-in-alt"></i> Iniciar sesión</button></a>
-                <a href="{{ url_for('main.register') }}" aria-label="Registrarse para una nueva cuenta"><button><i class="fas fa-user-plus"></i> Registrarse</button></a>
+                <a href="{{ url_for('main.login') }}" aria-label="Iniciar sesión">
+                    <button type="button"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</button>
+                </a>
+                <a href="{{ url_for('main.register') }}" aria-label="Registrarse para una nueva cuenta">
+                    <button type="button"><i class="fas fa-user-plus"></i> Registrarse</button>
+                </a>
             {% endif %}
-            <a href="{{ url_for('main.verificar_qr') }}" aria-label="Verificar la validez de un ticket"><button><i class="fas fa-qrcode"></i> Verificar Ticket</button></a>
-        </div>
-    </div>
-
-    <div class="footer">
+            <a href="{{ url_for('main.verificar_qr') }}" aria-label="Verificar la validez de un ticket">
+                <button type="button"><i class="fas fa-qrcode"></i> Verificar Ticket</button>
+            </a>
+        </nav>
+    </main>
+    <footer>
         <p>© 2025 QRPASS. Todos los derechos reservados.</p>
-    </div>
-
+    </footer>
+</body>
+</html>
 </body>
 </html>
