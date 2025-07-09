@@ -1,197 +1,175 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Panel Admin</title>
-    <style>
-        /* Estilos Generales del Cuerpo */
-        body {
-            font-family: 'Segoe UI', sans-serif; /* Fuente moderna y limpia */
-            background-color: #f4f6f8; /* Un gris claro para el fondo */
-            margin: 0;
-            padding: 20px;
-            color: #333; /* Color de texto oscuro para buena legibilidad */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Administración - QRPASS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #f0f2f5, #e0e5ec);
+      color: #2d3748;
+      line-height: 1.6;
+    }
 
-        /* Estilos de Títulos */
-        h1, h2 {
-            color: #2c3e50; /* Un azul oscuro para los encabezados */
-            text-align: center; /* Centrar los títulos */
-            margin-bottom: 25px; /* Espacio debajo de los títulos */
-        }
-        
-        h1 {
-            margin-top: 20px; /* Espacio superior para el título principal */
-        }
+    h1, h2 {
+      text-align: center;
+      color: #3f37c9;
+      margin-bottom: 20px;
+    }
 
-        /* Estilos del Formulario */
-        form {
-            background-color: #fff; /* Fondo blanco para el formulario */
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px; /* Bordes ligeramente redondeados */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sutil sombra */
-            display: flex; /* Usar flexbox para alinear elementos */
-            justify-content: center; /* Centrar el contenido horizontalmente */
-            align-items: center; /* Alinear verticalmente */
-            flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas pequeñas */
-            gap: 15px; /* Espacio entre los elementos del formulario */
-        }
+    .message {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      text-align: center;
+    }
 
-        input[type="text"] {
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100%; /* Ocupar el 100% del ancho del contenedor */
-            max-width: 300px; /* Ancho máximo para el campo de texto */
-            box-sizing: border-box; /* Incluir padding y border en el width */
-        }
+    .success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #34d399;
+    }
 
-        button {
-            background-color: #3498db; /* Un azul vibrante */
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
-        }
+    .error {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #f87171;
+    }
 
-        button:hover {
-            background-color: #2980b9; /* Azul más oscuro al pasar el ratón */
-        }
+    form {
+      max-width: 500px;
+      margin: 0 auto 40px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
 
-        /* Estilos de Listas */
-        ul {
-            list-style: none; /* Quitar los puntos de la lista */
-            padding: 0;
-            margin: 0 auto; /* Centrar la lista */
-            max-width: 800px; /* Ancho máximo para las listas */
-        }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
 
-        li {
-            background-color: #fff;
-            margin: 10px 0;
-            padding: 15px;
-            border-left: 5px solid #3498db; /* Borde azul distintivo a la izquierda */
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            display: flex; /* Usar flexbox para el contenido de la lista */
-            justify-content: space-between; /* Espaciar el contenido */
-            align-items: center; /* Alinear verticalmente */
-            flex-wrap: wrap; /* Permitir que el contenido se envuelva */
-            gap: 10px; /* Espacio entre los elementos dentro del li */
-            font-size: 1.05em; /* Fuente ligeramente más grande */
-        }
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: linear-gradient(135deg, #4361ee, #3f37c9);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-        /* Estilos para el estado de "Usado" */
-        .usado {
-            color: #28a745; /* Verde para "Usado" */
-            font-weight: bold;
-            flex-shrink: 0; /* Evitar que se encoja */
-        }
+    button[type="submit"]:hover {
+      background: linear-gradient(135deg, #3f37c9, #3a32b9);
+      transform: translateY(-2px);
+    }
 
-        .no-usado {
-            color: #dc3545; /* Rojo para "No usado" */
-            font-weight: bold;
-            flex-shrink: 0; /* Evitar que se encoja */
-        }
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
 
-        /* Estilos para el texto de los tickets en lista */
-        li span {
-            margin-right: 5px; /* Pequeño espacio entre los elementos de texto */
-        }
+    li {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    }
 
-        /* Responsividad para pantallas pequeñas */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px; /* Reducir el padding en pantallas pequeñas */
-            }
+    li span {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
 
-            form {
-                flex-direction: column; /* Apilar elementos del formulario en vertical */
-                align-items: stretch; /* Estirar elementos para ocupar el ancho */
-            }
+    .usado {
+      color: #b91c1c;
+      font-weight: bold;
+    }
 
-            input[type="text"] {
-                max-width: 100%; /* Ocupar el 100% del ancho disponible */
-            }
+    .no-usado {
+      color: #2f855a;
+      font-weight: bold;
+    }
 
-            li {
-                flex-direction: column; /* Apilar elementos de la lista en vertical */
-                align-items: flex-start; /* Alinear a la izquierda */
-                gap: 5px; /* Reducir espacio entre elementos apilados */
-            }
-            
-            li span {
-                margin-right: 0; /* Eliminar margen derecho */
-                width: 100%; /* Ocupar todo el ancho para cada detalle */
-            }
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 10px;
+      }
 
-            /* Asegurarse de que el estado "Usado/No usado" también se ajuste */
-            .usado, .no-usado {
-                text-align: left; /* Alinear a la izquierda cuando se apila */
-                width: 100%;
-            }
-        }
-    </style>
+      h1, h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Panel de Administración</h1>
+  <h1>Panel de Administración</h1>
 
-    <!-- Mensajes de éxito/error para el usuario -->
-    {% if success_message %}
-        <div style="background:#d4edda;color:#155724;padding:10px;border-radius:5px;margin-bottom:20px;">
-            {{ success_message }}
-        </div>
+  {% if success_message %}
+    <div class="message success">{{ success_message }}</div>
+  {% endif %}
+  {% if error_message %}
+    <div class="message error">{{ error_message }}</div>
+  {% endif %}
+
+  <form method="POST" action="{{ url_for('main.add_event') }}" role="form" aria-label="Agregar evento">
+    <label for="event_name" style="display:none;">Nombre del evento</label>
+    <input id="event_name" type="text" name="name" placeholder="Nombre del evento" required>
+    <button type="submit">Agregar evento</button>
+  </form>
+
+  <h2>Eventos</h2>
+  <ul aria-live="polite">
+    {% if events|length == 0 %}
+      <li style="text-align:center; color:#888;">Sin eventos registrados.</li>
+    {% else %}
+      {% for event in events %}
+        <li>
+          <span><strong>🎤 Evento:</strong> {{ event.name }}</span>
+        </li>
+      {% endfor %}
     {% endif %}
-    {% if error_message %}
-        <div style="background:#f8d7da;color:#721c24;padding:10px;border-radius:5px;margin-bottom:20px;">
-            {{ error_message }}
-        </div>
+  </ul>
+
+  <h2>Tickets</h2>
+  <ul aria-live="polite">
+    {% if tickets|length == 0 %}
+      <li style="text-align:center; color:#888;">Sin tickets registrados.</li>
+    {% else %}
+      {% for ticket in tickets %}
+        <li>
+          <span><strong>👤 Nombre:</strong> {{ ticket.name }}</span>
+          <span><strong>🎟 Evento:</strong> 
+            {% set event = events|selectattr('id', 'equalto', ticket.event_id)|first %}
+            {{ event.name if event else ticket.event_id }}
+          </span>
+          <span><strong>🔢 Cantidad:</strong> {{ ticket.quantity }}</span>
+          <span class="{{ 'usado' if ticket.usado else 'no-usado' }}">
+            {{ '✅ Usado' if ticket.usado else '🕓 No usado' }}
+          </span>
+        </li>
+      {% endfor %}
     {% endif %}
+  </ul>
 
-    <form method="POST" action="/admin/add_event" role="form" aria-label="Agregar evento">
-        <label for="event_name" style="display:none;">Nombre del evento</label>
-        <input id="event_name" type="text" name="name" placeholder="Nombre del evento" required>
-        <button type="submit">Agregar evento</button>
-    </form>
-
-    <h2>Eventos</h2>
-    <ul aria-live="polite">
-        {% if events|length == 0 %}
-            <li style="text-align:center;color:#888;">Sin eventos registrados.</li>
-        {% else %}
-            {% for event in events %}
-                <li>
-                    <span>{{ event.name }}</span>
-                </li>
-            {% endfor %}
-        {% endif %}
-    </ul>
-
-    <h2>Tickets</h2>
-    <ul aria-live="polite">
-        {% if tickets|length == 0 %}
-            <li style="text-align:center;color:#888;">Sin tickets registrados.</li>
-        {% else %}
-            {% for ticket in tickets %}
-                <li>
-                    <span>{{ ticket.name }}</span>
-                    <span>
-                        Evento: 
-                        {% set event = events|selectattr('id', 'equalto', ticket.event_id)|first %}
-                        {{ event.name if event else ticket.event_id }}
-                    </span>
-                    <span>Cantidad: {{ ticket.quantity }}</span>
-                    <span class="{{ 'usado' if ticket.usado else 'no-usado' }}">
-                        {{ 'Usado' if ticket.usado else 'No usado' }}
-                    </span>
-                </li>
-            {% endfor %}
-        {% endif %}
-    </ul>
 </body>
 </html>
