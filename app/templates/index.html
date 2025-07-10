@@ -18,6 +18,8 @@
             --success-bg: #d1fae5;
             --gray: #4a5568;
             --gray-light: #f0f2f5;
+            --white: #fff;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         html {
@@ -36,6 +38,68 @@
             color: #222;
             display: flex;
             flex-direction: column;
+        }
+
+        /* Topbar/Nav */
+        .topbar {
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            height: 54px;
+            border-radius: 0 0 14px 14px;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+        }
+        .topbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.25em;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: #fff;
+        }
+        .topbar nav {
+            display: flex;
+            gap: 18px;
+        }
+        .topbar nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1em;
+            transition: color 0.13s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .topbar nav a:hover,
+        .topbar nav a:focus {
+            color: #d1d9ff;
+        }
+        .topbar .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .topbar .user-menu span {
+            font-size: 0.97em;
+            color: #e0e5ec;
+            font-weight: 400;
+        }
+        .topbar .user-menu .avatar {
+            background: var(--primary-dark);
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.24em;
         }
 
         header {
@@ -79,7 +143,6 @@
             font-size: 1em;
             color: var(--gray);
         }
-
         .trust-signals .payment-logos img {
             height: 30px;
             margin: 0 4px;
@@ -286,6 +349,10 @@
         }
 
         /* Responsive Adjustments */
+        @media (max-width: 920px) {
+            .topbar { flex-direction: column; height: auto; padding: 10px 10px 0 10px;}
+            .topbar nav, .topbar .user-menu { margin-top: 5px;}
+        }
         @media (max-width: 768px) {
             body { padding: 12px; }
             header h1 { font-size: 2.2rem; }
@@ -297,6 +364,7 @@
         }
         @media (max-width: 480px) {
             body { padding: 7px; }
+            .topbar { flex-direction: column; height: auto; padding: 6px;}
             header h1 { font-size: 2rem; }
             .form-card { padding: 12px; }
             .alert { font-size: 15px; padding: 12px; flex-direction: column; }
@@ -305,8 +373,58 @@
             .testimonials .testi-blocks { flex-direction: column; gap: 8px;}
         }
     </style>
+    <script>
+        // Funciones para barra superior
+        function toggleUserMenu() {
+            var menu = document.getElementById('userDropdown');
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
+        }
+        document.addEventListener('click', function(e) {
+            var menu = document.getElementById('userDropdown');
+            if (menu && e.target.closest('.user-menu') === null) {
+                menu.style.display = "none";
+            }
+        });
+        // Ejemplo de función adicional
+        function scrollToComprar() {
+            var el = document.querySelector('.form-card');
+            if(el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
+        }
+    </script>
 </head>
 <body>
+    <!-- Barra Superior -->
+    <div class="topbar" role="navigation" aria-label="Barra superior de navegación">
+        <a class="logo" href="{{ url_for('main.index') }}">
+            <i class="fas fa-qrcode"></i> QRPASS
+        </a>
+        <nav>
+            <a href="{{ url_for('main.index') }}"><i class="fas fa-home"></i> Inicio</a>
+            <a href="#" onclick="scrollToComprar(); return false;"><i class="fas fa-ticket-alt"></i> Comprar</a>
+            <a href="{{ url_for('main.verificar_qr') }}"><i class="fas fa-qrcode"></i> Verificar</a>
+            <a href="{{ url_for('main.admin') }}"><i class="fas fa-user-shield"></i> Admin</a>
+        </nav>
+        <div class="user-menu" tabindex="0" onclick="toggleUserMenu();" style="cursor:pointer; position:relative;">
+            {% if current_user.is_authenticated %}
+                <span><i class="fas fa-user-circle avatar"></i> {{ current_user.name or current_user.email }}</span>
+                <div id="userDropdown" style="display:none;position:absolute;right:0;top:38px;background:#fff;color:#333;box-shadow:0 3px 10px rgba(0,0,0,0.10);border-radius:8px;min-width:135px;z-index:100;">
+                    <a href="{{ url_for('main.mis_tickets') }}" style="display:block;padding:12px 16px;text-decoration:none;color:#4361ee;">Mis Tickets</a>
+                    <a href="{{ url_for('main.logout') }}" style="display:block;padding:12px 16px;text-decoration:none;color:#b91c1c;">Salir</a>
+                </div>
+            {% else %}
+                <span><i class="fas fa-user-circle avatar"></i> Invitado</span>
+                <div id="userDropdown" style="display:none;position:absolute;right:0;top:38px;background:#fff;color:#333;box-shadow:0 3px 10px rgba(0,0,0,0.10);border-radius:8px;min-width:135px;z-index:100;">
+                    <a href="{{ url_for('main.login') }}" style="display:block;padding:12px 16px;text-decoration:none;color:#4361ee;">Iniciar sesión</a>
+                    <a href="{{ url_for('main.register') }}" style="display:block;padding:12px 16px;text-decoration:none;color:#4361ee;">Registrarse</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
     <header>
         <h1>QRPASS</h1>
         <p>Compra tus tickets de forma rápida y segura</p>
@@ -407,7 +525,6 @@
                 <blockquote>“El mejor sistema de tickets que he usado.”<span>— Laura S.</span></blockquote>
             </div>
         </section>
-
     </main>
     <footer>
         <p>© 2025 QRPASS. Todos los derechos reservados.</p>
