@@ -40,7 +40,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             padding-top: 20px;
         }
 
@@ -57,6 +57,34 @@
             color: var(--gray);
             max-width: 500px;
             margin: 0 auto;
+        }
+
+        /* Trust signals */
+        .trust-signals {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .trust-signals .trust-icons {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .trust-signals .trust-item {
+            min-width: 120px;
+        }
+        .trust-signals p {
+            margin: 6px 0 0 0;
+            font-weight: 500;
+            font-size: 1em;
+            color: var(--gray);
+        }
+
+        .trust-signals .payment-logos img {
+            height: 30px;
+            margin: 0 4px;
+            filter: grayscale(1) brightness(1.1);
+            vertical-align: middle;
         }
 
         main {
@@ -212,6 +240,42 @@
             outline: 2px solid #b3bcf7;
         }
 
+        /* Testimonials */
+        .testimonials {
+            background: #f8fafc;
+            padding: 18px 0 6px 0;
+            border-radius: 12px;
+            margin: 36px 0 0 0;
+            text-align: center;
+        }
+        .testimonials h3 {
+            color: #4361ee;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .testimonials .testi-blocks {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .testimonials blockquote {
+            max-width: 210px;
+            font-style: italic;
+            color: #4a5568;
+            background: #fff;
+            border-radius: 9px;
+            padding: 10px 14px 8px 14px;
+            margin: 0;
+            box-shadow: 0 2px 8px rgba(67,97,238,0.06);
+        }
+        .testimonials blockquote span {
+            display: block;
+            font-weight: 500;
+            margin-top: 4px;
+            color: #3f37c9;
+        }
+
         /* Footer */
         footer {
             margin-top: 40px;
@@ -228,6 +292,8 @@
             .form-card { padding: 20px; }
             .form-card h2 { font-size: 1.5rem; }
             nav.button-group { flex-direction: column; gap: 10px; }
+            .trust-signals .trust-icons { gap: 12px; }
+            .testimonials .testi-blocks { gap: 12px;}
         }
         @media (max-width: 480px) {
             body { padding: 7px; }
@@ -236,6 +302,7 @@
             .alert { font-size: 15px; padding: 12px; flex-direction: column; }
             .alert-close { position: static; margin-top: 5px; transform: none; }
             input, select, button, nav.button-group button { font-size: 15px; padding: 11px; }
+            .testimonials .testi-blocks { flex-direction: column; gap: 8px;}
         }
     </style>
 </head>
@@ -244,6 +311,27 @@
         <h1>QRPASS</h1>
         <p>Compra tus tickets de forma rápida y segura</p>
     </header>
+
+    <!-- Trust signals -->
+    <section class="trust-signals" aria-label="Confianza y seguridad">
+        <div class="trust-icons">
+            <div class="trust-item">
+                <i class="fas fa-lock" style="font-size:2em;color:#48bb78;"></i>
+                <p>Compra 100% segura</p>
+            </div>
+            <div class="trust-item payment-logos">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/MasterCard_Logo.svg" alt="MasterCard">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mercado_Pago_logo.svg" alt="Mercado Pago">
+                <p>Pagos protegidos</p>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-user-shield" style="font-size:2em;color:#4361ee;"></i>
+                <p>Datos protegidos</p>
+            </div>
+        </div>
+    </section>
+
     <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -309,11 +397,25 @@
                 <button type="button"><i class="fas fa-qrcode"></i> Verificar Ticket</button>
             </a>
         </nav>
+        
+        <!-- Testimonios -->
+        <section class="testimonials" aria-label="Testimonios de usuarios">
+            <h3>Lo que opinan nuestros usuarios</h3>
+            <div class="testi-blocks">
+                <blockquote>“¡Muy fácil y rápido!”<span>— Ana G.</span></blockquote>
+                <blockquote>“Me sentí seguro en todo momento.”<span>— Pedro M.</span></blockquote>
+                <blockquote>“El mejor sistema de tickets que he usado.”<span>— Laura S.</span></blockquote>
+            </div>
+        </section>
+
     </main>
     <footer>
         <p>© 2025 QRPASS. Todos los derechos reservados.</p>
+        <p style="font-size:0.93em;color:#666;margin-top:8px;">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            Tus datos y tu compra están protegidos.
+            <a href="/privacidad" style="color:#4361ee;">Política de privacidad</a>
+        </p>
     </footer>
-</body>
-</html>
 </body>
 </html>
