@@ -3,536 +3,302 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QRPASS - Inicio</title>
+    <meta name="description" content="QRPASS - Sistema de venta y verificación de tickets con códigos QR" />
+    <meta name="theme-color" content="#4361ee" />
+    <title>QRPASS - Sistema de Tickets QR</title>
+    
+    <!-- Preconnect para optimizar carga de fuentes y CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    
+    <!-- Estilos y fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <style>
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3f37c9;
-            --success: #48bb78;
-            --success-dark: #38a169;
-            --danger: #b91c1c;
-            --danger-bg: #fee2e2;
-            --success-bg: #d1fae5;
-            --gray: #4a5568;
-            --gray-light: #f0f2f5;
-            --white: #fff;
-            --shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        html {
-            box-sizing: border-box;
-        }
-        *, *:before, *:after {
-            box-sizing: inherit;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, var(--gray-light), #e0e5ec);
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            color: #222;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Topbar/Nav */
-        .topbar {
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 28px;
-            height: 54px;
-            border-radius: 0 0 14px 14px;
-            box-shadow: var(--shadow);
-            margin-bottom: 22px;
-        }
-        .topbar .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 1.25em;
-            letter-spacing: 1px;
-            text-decoration: none;
-            color: #fff;
-        }
-        .topbar nav {
-            display: flex;
-            gap: 18px;
-        }
-        .topbar nav a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1em;
-            transition: color 0.13s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .topbar nav a:hover,
-        .topbar nav a:focus {
-            color: #d1d9ff;
-        }
-        .topbar .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .topbar .user-menu span {
-            font-size: 0.97em;
-            color: #e0e5ec;
-            font-weight: 400;
-        }
-        .topbar .user-menu .avatar {
-            background: var(--primary-dark);
-            border-radius: 50%;
-            width: 32px; height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.24em;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 24px;
-            padding-top: 20px;
-        }
-
-        header h1 {
-            font-size: 2.8rem;
-            color: var(--primary);
-            margin-bottom: 8px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            color: var(--gray);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        /* Trust signals */
-        .trust-signals {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        .trust-signals .trust-icons {
-            display: flex;
-            justify-content: center;
-            gap: 28px;
-            flex-wrap: wrap;
-        }
-        .trust-signals .trust-item {
-            min-width: 120px;
-        }
-        .trust-signals p {
-            margin: 6px 0 0 0;
-            font-weight: 500;
-            font-size: 1em;
-            color: var(--gray);
-        }
-        .trust-signals .payment-logos img {
-            height: 30px;
-            margin: 0 4px;
-            filter: grayscale(1) brightness(1.1);
-            vertical-align: middle;
-        }
-
-        main {
-            max-width: 650px;
-            margin: 0 auto;
-            width: 100%;
-            flex-grow: 1;
-        }
-
-        /* Alert Messages */
-        .alert {
-            padding: 16px 50px 16px 16px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            animation: fadeIn 0.7s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-        .alert .fas { font-size: 1.3em; }
-        .alert-close {
-            background: none;
-            border: none;
-            color: inherit;
-            font-size: 1.5em;
-            cursor: pointer;
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 5px;
-            line-height: 1;
-        }
-        .alert.success {
-            background-color: var(--success-bg);
-            color: var(--success-dark);
-            border: 1px solid var(--success);
-        }
-        .alert.error {
-            background-color: var(--danger-bg);
-            color: var(--danger);
-            border: 1px solid #f87171;
-        }
-
-        /* Card Form */
-        .form-card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 32px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.09);
-            margin-bottom: 30px;
-            transition: box-shadow 0.2s;
-        }
-        .form-card:hover {
-            box-shadow: 0 14px 32px rgba(67,97,238,0.10);
-        }
-        .form-card h2 {
-            text-align: center;
-            color: var(--gray);
-            margin: 0 0 25px 0;
-            font-size: 1.8rem;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--gray);
-            display: block;
-        }
-        input[type="text"], input[type="number"], select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #cce;
-            font-size: 16px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: #f8fafc;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67,97,238,0.13);
-        }
-
-        /* Submit Button */
-        button[type="submit"] {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--success), var(--success-dark));
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.15s;
-            box-shadow: 0 5px 15px rgba(56,161,105,0.24);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        button[type="submit"]:hover {
-            background: linear-gradient(135deg, var(--success-dark), #2f855a);
-            transform: translateY(-2px) scale(1.01);
-            box-shadow: 0 7px 20px rgba(56,161,105,0.26);
-        }
-
-        /* Navigation Buttons */
-        nav.button-group {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 28px 0 30px 0;
-        }
-        nav.button-group a {
-            text-decoration: none;
-            flex: 1 1 120px;
-        }
-        nav.button-group button {
-            width: 100%;
-            padding: 14px 0;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.11s;
-            box-shadow: 0 4px 12px rgba(63,55,201,0.17);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        nav.button-group button:hover, nav.button-group button:focus {
-            background: linear-gradient(135deg, var(--primary-dark), #3a32b9);
-            transform: translateY(-2px) scale(1.01);
-            outline: 2px solid #b3bcf7;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            background: #f8fafc;
-            padding: 18px 0 6px 0;
-            border-radius: 12px;
-            margin: 36px 0 0 0;
-            text-align: center;
-        }
-        .testimonials h3 {
-            color: #4361ee;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-        .testimonials .testi-blocks {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .testimonials blockquote {
-            max-width: 210px;
-            font-style: italic;
-            color: #4a5568;
-            background: #fff;
-            border-radius: 9px;
-            padding: 10px 14px 8px 14px;
-            margin: 0;
-            box-shadow: 0 2px 8px rgba(67,97,238,0.06);
-        }
-        .testimonials blockquote span {
-            display: block;
-            font-weight: 500;
-            margin-top: 4px;
-            color: #3f37c9;
-        }
-
-        /* Footer */
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            color: #888;
-            font-size: 0.97em;
-            padding-bottom: 20px;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 920px) {
-            .topbar { flex-direction: column; height: auto; padding: 10px 10px 0 10px;}
-            .topbar nav, .topbar .user-menu { margin-top: 5px;}
-        }
-        @media (max-width: 768px) {
-            body { padding: 12px; }
-            header h1 { font-size: 2.2rem; }
-            .form-card { padding: 20px; }
-            .form-card h2 { font-size: 1.5rem; }
-            nav.button-group { flex-direction: column; gap: 10px; }
-            .trust-signals .trust-icons { gap: 12px; }
-            .testimonials .testi-blocks { gap: 12px;}
-        }
-        @media (max-width: 480px) {
-            body { padding: 7px; }
-            .topbar { flex-direction: column; height: auto; padding: 6px;}
-            header h1 { font-size: 2rem; }
-            .form-card { padding: 12px; }
-            .alert { font-size: 15px; padding: 12px; flex-direction: column; }
-            .alert-close { position: static; margin-top: 5px; transform: none; }
-            input, select, button, nav.button-group button { font-size: 15px; padding: 11px; }
-            .testimonials .testi-blocks { flex-direction: column; gap: 8px;}
-        }
-    </style>
-    <script>
-        // Funciones para barra superior
-        function toggleUserMenu() {
-            var menu = document.getElementById('userDropdown');
-            if (menu.style.display === "block") {
-                menu.style.display = "none";
-            } else {
-                menu.style.display = "block";
-            }
-        }
-        document.addEventListener('click', function(e) {
-            var menu = document.getElementById('userDropdown');
-            if (menu && e.target.closest('.user-menu') === null) {
-                menu.style.display = "none";
-            }
-        });
-        // Ejemplo de función adicional
-        function scrollToComprar() {
-            var el = document.querySelector('.form-card');
-            if(el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
-        }
-    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
 </head>
-<body>
+<body class="light-mode">
+    <!-- Skip link para accesibilidad -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
     <!-- Barra Superior -->
     <div class="topbar" role="navigation" aria-label="Barra superior de navegación">
-        <a class="logo" href="{{ url_for('main.index') }}">
-            <i class="fas fa-qrcode"></i> QRPASS
+        <a class="logo" href="{{ url_for('main.index') }}" aria-label="QRPASS inicio">
+            <i class="fas fa-qrcode" aria-hidden="true"></i> 
+            <span>QRPASS</span>
         </a>
-        <nav>
-            <a href="{{ url_for('main.index') }}"><i class="fas fa-home"></i> Inicio</a>
-            <a href="#" onclick="scrollToComprar(); return false;"><i class="fas fa-ticket-alt"></i> Comprar</a>
-            <a href="{{ url_for('main.verificar_qr') }}"><i class="fas fa-qrcode"></i> Verificar</a>
-            <a href="{{ url_for('main.admin') }}"><i class="fas fa-user-shield"></i> Admin</a>
+        
+        <nav class="main-nav">
+            <button class="mobile-menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links">
+                <li><a href="{{ url_for('main.index') }}" class="active"><i class="fas fa-home" aria-hidden="true"></i> Inicio</a></li>
+                <li><a href="#comprar" class="scroll-to-buy"><i class="fas fa-ticket-alt" aria-hidden="true"></i> Comprar</a></li>
+                <li><a href="{{ url_for('main.verificar_qr') }}"><i class="fas fa-qrcode" aria-hidden="true"></i> Verificar</a></li>
+                <li><a href="{{ url_for('main.admin') }}"><i class="fas fa-user-shield" aria-hidden="true"></i> Admin</a></li>
+            </ul>
         </nav>
-        <div class="user-menu" tabindex="0" onclick="toggleUserMenu();" style="cursor:pointer; position:relative;">
+
+        <div class="user-menu" tabindex="0">
             {% if current_user.is_authenticated %}
-                <span><i class="fas fa-user-circle avatar"></i> {{ current_user.name or current_user.email }}</span>
-                <div id="userDropdown" style="display:none;position:absolute;right:0;top:38px;background:#fff;color:#333;box-shadow:0 3px 10px rgba(0,0,0,0.10);border-radius:8px;min-width:135px;z-index:100;">
-                    <a href="{{ url_for('main.mis_tickets') }}" style="display:block;padding:12px 16px;text-decoration:none;color:#4361ee;">Mis Tickets</a>
-                    <a href="{{ url_for('main.logout') }}" style="display:block;padding:12px 16px;text-decoration:none;color:#b91c1c;">Salir</a>
+                <button class="user-button" aria-expanded="false">
+                    <i class="fas fa-user-circle avatar" aria-hidden="true"></i>
+                    <span>{{ current_user.name or current_user.email }}</span>
+                </button>
+                <div class="user-dropdown" hidden>
+                    <a href="{{ url_for('main.mis_tickets') }}">
+                        <i class="fas fa-ticket-alt" aria-hidden="true"></i> Mis Tickets
+                    </a>
+                    <a href="{{ url_for('main.perfil') }}">
+                        <i class="fas fa-user-cog" aria-hidden="true"></i> Mi Perfil
+                    </a>
+                    <hr>
+                    <a href="{{ url_for('main.logout') }}" class="logout-link">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Cerrar Sesión
+                    </a>
                 </div>
             {% else %}
-                <span><i class="fas fa-user-circle avatar"></i> Invitado</span>
-                <div id="userDropdown" style="display:none;position:absolute;right:0;top:38px;background:#fff;color:#333;box-shadow:0 3px 10px rgba(0,0,0,0.10);border-radius:8px;min-width:135px;z-index:100;">
-                    <a href="{{ url_for('main.login') }}" style="display:block;padding:12px 16px;text-decoration:none;color:#4361ee;">Iniciar sesión</a>
-                    <a href="{{ url_for('main.register') }}" style="display:block;padding:12px 16px;text-decoration:none;color:#4361ee;">Registrarse</a>
+                <button class="user-button" aria-expanded="false">
+                    <i class="fas fa-user-circle avatar" aria-hidden="true"></i>
+                    <span>Invitado</span>
+                </button>
+                <div class="user-dropdown" hidden>
+                    <a href="{{ url_for('main.login') }}">
+                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión
+                    </a>
+                    <a href="{{ url_for('main.register') }}">
+                        <i class="fas fa-user-plus" aria-hidden="true"></i> Registrarse
+                    </a>
                 </div>
             {% endif %}
         </div>
     </div>
 
-    <header>
-        <h1>QRPASS</h1>
-        <p>Compra tus tickets de forma rápida y segura</p>
-    </header>
+    <main id="main-content">
+        <header class="hero">
+            <h1>QRPASS</h1>
+            <p>Sistema de tickets QR rápido, seguro y fácil de usar</p>
+            <div class="cta-buttons">
+                <a href="#comprar" class="btn btn-primary scroll-to-buy">
+                    <i class="fas fa-ticket-alt" aria-hidden="true"></i> Comprar Tickets
+                </a>
+                <a href="{{ url_for('main.verificar_qr') }}" class="btn btn-secondary">
+                    <i class="fas fa-qrcode" aria-hidden="true"></i> Verificar Ticket
+                </a>
+            </div>
+        </header>
 
-    <!-- Trust signals -->
-    <section class="trust-signals" aria-label="Confianza y seguridad">
-        <div class="trust-icons">
-            <div class="trust-item">
-                <i class="fas fa-lock" style="font-size:2em;color:#48bb78;"></i>
-                <p>Compra 100% segura</p>
+        <!-- Indicadores de confianza -->
+        <section class="trust-signals" aria-labelledby="trust-title">
+            <h2 id="trust-title" class="visually-hidden">¿Por qué confiar en QRPASS?</h2>
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                    <h3>Seguridad Garantizada</h3>
+                    <p>Todas las transacciones están protegidas</p>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-qrcode" aria-hidden="true"></i>
+                    <h3>Tickets QR Únicos</h3>
+                    <p>Verificación instantánea y segura</p>
+                </div>
+                <div class="trust-item">
+                    <div class="payment-methods" aria-label="Métodos de pago aceptados">
+                        <img src="{{ url_for('static', filename='img/payment/visa.webp') }}" 
+                             alt="Visa" loading="lazy"
+                             width="40" height="25">
+                        <img src="{{ url_for('static', filename='img/payment/mastercard.webp') }}"
+                             alt="MasterCard" loading="lazy"
+                             width="40" height="25">
+                        <img src="{{ url_for('static', filename='img/payment/mercadopago.webp') }}"
+                             alt="Mercado Pago" loading="lazy"
+                             width="40" height="25">
+                    </div>
+                    <h3>Múltiples Formas de Pago</h3>
+                    <p>Paga como prefieras</p>
+                </div>
             </div>
-            <div class="trust-item payment-logos">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/MasterCard_Logo.svg" alt="MasterCard">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mercado_Pago_logo.svg" alt="Mercado Pago">
-                <p>Pagos protegidos</p>
-            </div>
-            <div class="trust-item">
-                <i class="fas fa-user-shield" style="font-size:2em;color:#4361ee;"></i>
-                <p>Datos protegidos</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <main>
+        <!-- Alertas -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert {{ category }}" role="alert" aria-live="assertive">
-                        {% if category == 'success' %}
-                            <i class="fas fa-check-circle" aria-hidden="true"></i>
-                        {% elif category == 'error' %}
-                            <i class="fas fa-times-circle" aria-hidden="true"></i>
-                        {% endif %}
-                        <span>{{ message }}</span>
-                        <button type="button" class="alert-close" aria-label="Cerrar alerta" onclick="this.parentElement.style.display='none';">&times;</button>
-                    </div>
-                {% endfor %}
+                <div class="alerts-container" aria-live="polite">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert">
+                            {% if category == 'success' %}
+                                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                            {% elif category == 'error' %}
+                                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            {% endif %}
+                            <p>{{ message }}</p>
+                            <button type="button" class="alert-close" aria-label="Cerrar">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         {% endwith %}
 
-        <section class="form-card" aria-label="Formulario de compra de tickets">
-            <h2>Comprar Tickets</h2>
-            <form method="POST" action="{{ url_for('main.purchase_ticket') }}" autocomplete="on">
-                <div class="form-group">
-                    <label for="name">Nombre completo</label>
-                    <input type="text" id="name" name="name" placeholder="Ej: Juan Pérez" required autocomplete="name">
-                </div>
-                <div class="form-group">
-                    <label for="event">Evento</label>
-                    <select id="event" name="event" required>
-                        {% for event in events %}
-                            <option value="{{ event.id }}">{{ event.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Cantidad</label>
-                    <input type="number" id="quantity" name="quantity" min="1" value="1" required inputmode="numeric" pattern="[0-9]*" aria-label="Cantidad de tickets">
-                </div>
-                <button type="submit" aria-label="Ir al pago simulado">
-                    Ir al pago simulado <i class="fas fa-arrow-right" aria-hidden="true"></i>
-                </button>
-            </form>
+        <!-- Formulario de Compra -->
+        <section id="comprar" class="purchase-section" aria-labelledby="purchase-title">
+            <div class="form-card">
+                <h2 id="purchase-title">Comprar Tickets</h2>
+                
+                <form id="purchase-form" method="POST" action="{{ url_for('main.purchase_ticket') }}" 
+                      class="needs-validation" novalidate>
+                    {{ form.csrf_token }}
+                    
+                    <div class="form-group">
+                        <label for="event">Evento</label>
+                        <select id="event" name="event" required
+                                aria-describedby="event-help">
+                            <option value="">Selecciona un evento</option>
+                            {% for event in events %}
+                                <option value="{{ event.id }}" 
+                                        data-price="{{ event.price }}"
+                                        data-available="{{ event.available_tickets }}">
+                                    {{ event.name }} - ${{ event.price }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <small id="event-help" class="form-text">
+                            <span class="available-tickets"></span>
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Cantidad</label>
+                        <div class="quantity-input">
+                            <button type="button" class="quantity-btn minus" aria-label="Disminuir cantidad">
+                                <i class="fas fa-minus" aria-hidden="true"></i>
+                            </button>
+                            <input type="number" id="quantity" name="quantity" 
+                                   min="1" max="10" value="1" required
+                                   aria-describedby="quantity-help">
+                            <button type="button" class="quantity-btn plus" aria-label="Aumentar cantidad">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <small id="quantity-help" class="form-text">
+                            Máximo 10 tickets por compra
+                        </small>
+                    </div>
+
+                    <div class="price-summary" aria-live="polite">
+                        <div class="price-row">
+                            <span>Precio por ticket:</span>
+                            <span class="unit-price">$0.00</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total:</span>
+                            <span class="total-price">$0.00</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-block">
+                        <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                        Proceder al Pago
+                        <span class="loading-indicator" hidden>
+                            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </form>
+            </div>
         </section>
 
-        <nav class="button-group" aria-label="Opciones de navegación">
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('main.mis_tickets') }}" aria-label="Ver mis tickets">
-                    <button type="button"><i class="fas fa-ticket-alt"></i> Mis Tickets</button>
-                </a>
-                <a href="{{ url_for('main.logout') }}" aria-label="Cerrar sesión">
-                    <button type="button"><i class="fas fa-sign-out-alt"></i> Salir</button>
-                </a>
-                <a href="{{ url_for('main.admin') }}" aria-label="Acceder al panel de administración">
-                    <button type="button"><i class="fas fa-user-shield"></i> Panel Admin</button>
-                </a>
-            {% else %}
-                <a href="{{ url_for('main.login') }}" aria-label="Iniciar sesión">
-                    <button type="button"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</button>
-                </a>
-                <a href="{{ url_for('main.register') }}" aria-label="Registrarse para una nueva cuenta">
-                    <button type="button"><i class="fas fa-user-plus"></i> Registrarse</button>
-                </a>
-            {% endif %}
-            <a href="{{ url_for('main.verificar_qr') }}" aria-label="Verificar la validez de un ticket">
-                <button type="button"><i class="fas fa-qrcode"></i> Verificar Ticket</button>
-            </a>
-        </nav>
-        
         <!-- Testimonios -->
-        <section class="testimonials" aria-label="Testimonios de usuarios">
-            <h3>Lo que opinan nuestros usuarios</h3>
-            <div class="testi-blocks">
-                <blockquote>“¡Muy fácil y rápido!”<span>— Ana G.</span></blockquote>
-                <blockquote>“Me sentí seguro en todo momento.”<span>— Pedro M.</span></blockquote>
-                <blockquote>“El mejor sistema de tickets que he usado.”<span>— Laura S.</span></blockquote>
+        <section class="testimonials" aria-labelledby="testimonials-title">
+            <h2 id="testimonials-title">Lo que dicen nuestros usuarios</h2>
+            <div class="testimonials-grid">
+                <blockquote class="testimonial-card">
+                    <p>"¡Excelente servicio! La compra fue muy rápida y el proceso de verificación en el evento fue sin problemas."</p>
+                    <footer>
+                        <cite>María González</cite>
+                        <div class="rating" aria-label="5 de 5 estrellas">
+                            ★★★★★
+                        </div>
+                    </footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p>"Me encanta que puedo tener todos mis tickets en mi teléfono. ¡Muy conveniente!"</p>
+                    <footer>
+                        <cite>Carlos Rodríguez</cite>
+                        <div class="rating" aria-label="5 de 5 estrellas">
+                            ★★★★★
+                        </div>
+                    </footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p>"Sistema muy seguro y fácil de usar. Lo recomiendo totalmente."</p>
+                    <footer>
+                        <cite>Ana Martínez</cite>
+                        <div class="rating" aria-label="5 de 5 estrellas">
+                            ★★★★★
+                        </div>
+                    </footer>
+                </blockquote>
             </div>
         </section>
     </main>
-    <footer>
-        <p>© 2025 QRPASS. Todos los derechos reservados.</p>
-        <p style="font-size:0.93em;color:#666;margin-top:8px;">
-            <i class="fas fa-shield-alt" aria-hidden="true"></i>
-            Tus datos y tu compra están protegidos.
-            <a href="/privacidad" style="color:#4361ee;">Política de privacidad</a>
-        </p>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-branding">
+                <img src="{{ url_for('static', filename='img/logo.webp') }}" 
+                     alt="QRPASS Logo" width="120" height="40"
+                     loading="lazy">
+                <p>Tu plataforma confiable de tickets QR</p>
+            </div>
+            
+            <div class="footer-links">
+                <nav aria-label="Enlaces del pie de página">
+                    <h3>Enlaces Útiles</h3>
+                    <ul>
+                        <li><a href="{{ url_for('main.faq') }}">Preguntas Frecuentes</a></li>
+                        <li><a href="{{ url_for('main.contacto') }}">Contacto</a></li>
+                        <li><a href="{{ url_for('main.privacidad') }}">Política de Privacidad</a></li>
+                        <li><a href="{{ url_for('main.terminos') }}">Términos y Condiciones</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <div class="footer-social">
+                <h3>Síguenos</h3>
+                <div class="social-links">
+                    <a href="https://facebook.com/qrpass" target="_blank" rel="noopener"
+                       aria-label="Síguenos en Facebook">
+                        <i class="fab fa-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://twitter.com/qrpass" target="_blank" rel="noopener"
+                       aria-label="Síguenos en Twitter">
+                        <i class="fab fa-twitter" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://instagram.com/qrpass" target="_blank" rel="noopener"
+                       aria-label="Síguenos en Instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; {{ current_year }} QRPASS. Todos los derechos reservados.</p>
+            <div class="theme-toggle">
+                <button id="theme-toggle" aria-label="Cambiar tema">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
     </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </body>
 </html>
