@@ -1,304 +1,351 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="QRPASS - Sistema de venta y verificación de tickets con códigos QR" />
-    <meta name="theme-color" content="#4361ee" />
-    <title>QRPASS - Sistema de Tickets QR</title>
-    
-    <!-- Preconnect para optimizar carga de fuentes y CDN -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-    
-    <!-- Estilos y fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="QRPASS - Sistema de venta y verificación de tickets con códigos QR" />
+    <meta name="theme-color" content="#4361ee" />
+    <title>QRPASS - Sistema de Tickets QR</title>
+    
+    <!-- Preconnect para optimizar carga de fuentes y CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    
+    <!-- Estilos y fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
 </head>
 <body class="light-mode">
-    <!-- Skip link para accesibilidad -->
-    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    <!-- Skip link para accesibilidad -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
 
-    <!-- Barra Superior -->
-    <div class="topbar" role="navigation" aria-label="Barra superior de navegación">
-        <a class="logo" href="{{ url_for('main.index') }}" aria-label="QRPASS inicio">
-            <i class="fas fa-qrcode" aria-hidden="true"></i> 
-            <span>QRPASS</span>
-        </a>
-        
-        <nav class="main-nav">
-            <button class="mobile-menu-toggle" aria-label="Abrir menú" aria-expanded="false">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <ul class="nav-links">
-                <li><a href="{{ url_for('main.index') }}" class="active"><i class="fas fa-home" aria-hidden="true"></i> Inicio</a></li>
-                <li><a href="#comprar" class="scroll-to-buy"><i class="fas fa-ticket-alt" aria-hidden="true"></i> Comprar</a></li>
-                <li><a href="{{ url_for('main.verificar_qr') }}"><i class="fas fa-qrcode" aria-hidden="true"></i> Verificar</a></li>
-                <li><a href="{{ url_for('main.admin') }}"><i class="fas fa-user-shield" aria-hidden="true"></i> Admin</a></li>
-            </ul>
-        </nav>
+    <!-- Barra Superior -->
+    <div class="topbar" role="navigation" aria-label="Barra superior de navegación">
+        <a class="logo" href="{{ url_for('main.index') }}" aria-label="QRPASS inicio">
+            <i class="fas fa-qrcode" aria-hidden="true"></i> 
+            <span>QRPASS</span>
+        </a>
+        
+        <nav class="main-nav">
+            <button class="mobile-menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links">
+                <li><a href="{{ url_for('main.index') }}" class="active"><i class="fas fa-home" aria-hidden="true"></i> Inicio</a></li>
+                <li><a href="#comprar" class="scroll-to-buy"><i class="fas fa-ticket-alt" aria-hidden="true"></i> Comprar</a></li>
+                <li><a href="{{ url_for('main.verificar_qr') }}"><i class="fas fa-qrcode" aria-hidden="true"></i> Verificar</a></li>
+                <li><a href="{{ url_for('main.admin') }}"><i class="fas fa-user-shield" aria-hidden="true"></i> Admin</a></li>
+            </ul>
+        </nav>
 
-        <div class="user-menu" tabindex="0">
-            {% if current_user.is_authenticated %}
-                <button class="user-button" aria-expanded="false">
-                    <i class="fas fa-user-circle avatar" aria-hidden="true"></i>
-                    <span>{{ current_user.name or current_user.email }}</span>
-                </button>
-                <div class="user-dropdown" hidden>
-                    <a href="{{ url_for('main.mis_tickets') }}">
-                        <i class="fas fa-ticket-alt" aria-hidden="true"></i> Mis Tickets
-                    </a>
-                    <a href="{{ url_for('main.perfil') }}">
-                        <i class="fas fa-user-cog" aria-hidden="true"></i> Mi Perfil
-                    </a>
-                    <hr>
-                    <a href="{{ url_for('main.logout') }}" class="logout-link">
-                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Cerrar Sesión
-                    </a>
-                </div>
-            {% else %}
-                <button class="user-button" aria-expanded="false">
-                    <i class="fas fa-user-circle avatar" aria-hidden="true"></i>
-                    <span>Invitado</span>
-                </button>
-                <div class="user-dropdown" hidden>
-                    <a href="{{ url_for('main.login') }}">
-                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión
-                    </a>
-                    <a href="{{ url_for('main.register') }}">
-                        <i class="fas fa-user-plus" aria-hidden="true"></i> Registrarse
-                    </a>
-                </div>
-            {% endif %}
-        </div>
-    </div>
+        <div class="user-menu" tabindex="0">
+            {% if current_user.is_authenticated %}
+                <button class="user-button" aria-expanded="false">
+                    <i class="fas fa-user-circle avatar" aria-hidden="true"></i>
+                    <span>{{ current_user.name or current_user.email }}</span>
+                </button>
+                <div class="user-dropdown" hidden>
+                    <a href="{{ url_for('main.mis_tickets') }}">
+                        <i class="fas fa-ticket-alt" aria-hidden="true"></i> Mis Tickets
+                    </a>
+                    <!-- 
+                    <a href="{{ url_for('main.perfil') }}">
+                        <i class="fas fa-user-cog" aria-hidden="true"></i> Mi Perfil
+                    </a> 
+                    -->
+                    <hr>
+                    <a href="{{ url_for('main.logout') }}" class="logout-link">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Cerrar Sesión
+                    </a>
+                </div>
+            {% else %}
+                <button class="user-button" aria-expanded="false">
+                    <i class="fas fa-user-circle avatar" aria-hidden="true"></i>
+                    <span>Invitado</span>
+                </button>
+                <div class="user-dropdown" hidden>
+                    <a href="{{ url_for('main.login') }}">
+                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión
+                    </a>
+          _         <a href="{{ url_for('main.register') }}">
+                        <i class="fas fa-user-plus" aria-hidden="true"></i> Registrarse
+                    </a>
+                </div>
+J
+            {% endif %}
+        </div>
+    </div>
 
-    <main id="main-content">
-        <header class="hero">
-            <h1>QRPASS</h1>
-            <p>Sistema de tickets QR rápido, seguro y fácil de usar</p>
-            <div class="cta-buttons">
-                <a href="#comprar" class="btn btn-primary scroll-to-buy">
-                    <i class="fas fa-ticket-alt" aria-hidden="true"></i> Comprar Tickets
-                </a>
-                <a href="{{ url_for('main.verificar_qr') }}" class="btn btn-secondary">
-                    <i class="fas fa-qrcode" aria-hidden="true"></i> Verificar Ticket
-                </a>
-            </div>
-        </header>
+    <main id="main-content">
+        <header class="hero">
+            <h1>QRPASS</h1>
+            <p>Sistema de tickets QR rápido, seguro y fácil de usar</p>
+            <div class="cta-buttons">
+                <a href="#comprar" class="btn btn-primary scroll-to-buy">
+                    <i class="fas fa-ticket-alt" aria-hidden="true"></i> Comprar Tickets
+                </a>
+                <a href="{{ url_for('main.verificar_qr') }}" class="btn btn-secondary">
+GO
+                    <i class="fas fa-qrcode" aria-hidden="true"></i> Verificar Ticket
+                </a>
+            </div>
+        </header>
 
-        <!-- Indicadores de confianza -->
-        <section class="trust-signals" aria-labelledby="trust-title">
-            <h2 id="trust-title" class="visually-hidden">¿Por qué confiar en QRPASS?</h2>
-            <div class="trust-grid">
-                <div class="trust-item">
-                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
-                    <h3>Seguridad Garantizada</h3>
-                    <p>Todas las transacciones están protegidas</p>
-                </div>
-                <div class="trust-item">
-                    <i class="fas fa-qrcode" aria-hidden="true"></i>
-                    <h3>Tickets QR Únicos</h3>
-                    <p>Verificación instantánea y segura</p>
-                </div>
-                <div class="trust-item">
-                    <div class="payment-methods" aria-label="Métodos de pago aceptados">
-                        <img src="{{ url_for('static', filename='img/payment/visa.webp') }}" 
-                             alt="Visa" loading="lazy"
-                             width="40" height="25">
-                        <img src="{{ url_for('static', filename='img/payment/mastercard.webp') }}"
-                             alt="MasterCard" loading="lazy"
-                             width="40" height="25">
-                        <img src="{{ url_for('static', filename='img/payment/mercadopago.webp') }}"
-                             alt="Mercado Pago" loading="lazy"
-                             width="40" height="25">
-                    </div>
-                    <h3>Múltiples Formas de Pago</h3>
-                    <p>Paga como prefieras</p>
-                </div>
-            </div>
-        </section>
+        <!-- Indicadores de confianza -->
+        <section class="trust-signals" aria-labelledby="trust-title">
+            <h2 id="trust-title" class="visually-hidden">¿Por qué confiar en QRPASS?</h2>
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                    <h3>Seguridad Garantizada</h3>
+                    <p>Todas las transacciones están protegidas</p>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-qrcode" aria-hidden="true"></i>
+                    <h3>Tickets QR Únicos</h3>
+                    <p>Verificación instantánea y segura</p>
+                </div>
+                <div class="trust-item">
+                    <div class="payment-methods" aria-label="Métodos de pago aceptados">
+s
+                        <img src="{{ url_for('static', filename='img/payment/visa.webp') }}" 
+                             alt="Visa" loading="lazy"
+                             width="40" height="25">
+                        <img src="{{ url_for('static', filename='img/payment/mastercard.webp') }}"
+                             alt="MasterCard" loading="lazy"
+                             width="40" height="25">
+II
+                        <img src="{{ url_for('static', filename='img/payment/mercadopago.webp') }}"
+                             alt="Mercado Pago" loading="lazy"
+                             width="40" height="25">
+s
+                    </div>
+                    <h3>Múltiples Formas de Pago</h3>
+                    <p>Paga como prefieras</p>
+                </div>
+    m
+            </div>
+        </section>
 
-        <!-- Alertas -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="alerts-container" aria-live="polite">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}" role="alert">
-                            {% if category == 'success' %}
-                                <i class="fas fa-check-circle" aria-hidden="true"></i>
-                            {% elif category == 'error' %}
-                                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-                            {% endif %}
-                            <p>{{ message }}</p>
-                            <button type="button" class="alert-close" aria-label="Cerrar">
-                                <i class="fas fa-times" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+        <!-- Alertas -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts-container" aria-live="polite">
+                    {% for category, message in messages %}
+                s
+                    <div class="alert alert-{{ category }}" role="alert">
+                            {% if category == 'success' %}
+                                <i class="fas fa-check-circle" aria-hidden="true"></i>
+C
+                            {% elif category == 'error' %}
+                                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                            {% endif %}
+                            <p>{{ message }}</p>
+                            <button type="button" class="alert-close" aria-label="Cerrar">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+J
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+J
+        {% endwith %}
 
-        <!-- Formulario de Compra -->
-        <section id="comprar" class="purchase-section" aria-labelledby="purchase-title">
-            <div class="form-card">
-                <h2 id="purchase-title">Comprar Tickets</h2>
-                
-                <form id="purchase-form" method="POST" action="{{ url_for('main.purchase_ticket') }}" 
-                      class="needs-validation" novalidate>
-                    {{ form.csrf_token }}
-                    
-                    <div class="form-group">
-                        <label for="event">Evento</label>
-                        <select id="event" name="event" required
-                                aria-describedby="event-help">
-                            <option value="">Selecciona un evento</option>
-                            {% for event in events %}
-                                <option value="{{ event.id }}" 
-                                        data-price="{{ event.price }}"
-                                        data-available="{{ event.available_tickets }}">
-                                    {{ event.name }} - ${{ event.price }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                        <small id="event-help" class="form-text">
-                            <span class="available-tickets"></span>
-                        </small>
-                    </div>
+        <!-- Formulario de Compra -->
+        <section id="comprar" class="purchase-section" aria-labelledby="purchase-title">
+            <div class="form-card">
+                <h2 id="purchase-title">Comprar Tickets</h2>
+                
+                <form id="purchase-form" method="POST" action="{{ url_for('main.purchase_ticket') }}" 
+                      class="needs-validation" novalidate>
+                    {{ form.csrf_token }}
+                    
+                    <div class="form-group">
+April 2024
+                        <label for="event">Evento</label>
+                        <select id="event" name="event" required
+                                aria-describedby="event-help">
+_E
+                            <option value="">Selecciona un evento</option>
+                            {% for event in events %}
+                                <option value="{{ event.id }}"s
+                                        data-price="{{ event.price }}"
+                                        data-available="{{ event.available_tickets }}">
+SA
+                                    {{ event.name }} - ${{ event.price }}
+                                </option>
+                            {% endfor %}
+                        </select>
+  s
+                      <small id="event-help" class="form-text">
+                            <span class="available-tickets"></span>
+                        </small>
+                    </div>
 
-                    <div class="form-group">
-                        <label for="quantity">Cantidad</label>
-                        <div class="quantity-input">
-                            <button type="button" class="quantity-btn minus" aria-label="Disminuir cantidad">
-                                <i class="fas fa-minus" aria-hidden="true"></i>
-                            </button>
-                            <input type="number" id="quantity" name="quantity" 
-                                   min="1" max="10" value="1" required
-                                   aria-describedby="quantity-help">
-                            <button type="button" class="quantity-btn plus" aria-label="Aumentar cantidad">
-                                <i class="fas fa-plus" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <small id="quantity-help" class="form-text">
-                            Máximo 10 tickets por compra
-                        </small>
-                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Cantidad</label>
+                        <div class="quantity-input">
+                            <button type="button" class="quantity-btn minus" aria-label="Disminuir cantidad">
+s
+                                <i class="fas fa-minus" aria-hidden="true"></i>
+                            </button>
+                            <input type="number" id="quantity" name="quantity" 
+                                   min="1" max="10" value="1" required
+                                   aria-describedby="quantity-help">
+                            <button type="button" class="quantity-btn plus" aria-label="Aumentar cantidad">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                            </button>
+s
+s
+                        </div>
+                        <small id="quantity-help" class="form-text">
+                            Máximo 10 tickets por compra
+                        </small>
+                    </div>
 
-                    <div class="price-summary" aria-live="polite">
-                        <div class="price-row">
-                            <span>Precio por ticket:</span>
-                            <span class="unit-price">$0.00</span>
-                        </div>
-                        <div class="price-row total">
-                            <span>Total:</span>
-                            <span class="total-price">$0.00</span>
-                        </div>
-                    </div>
+                    <div class="price-summary" aria-live="polite">
+s
+s
+                        <div class="price-row">
+                            <span>Precio por ticket:</span>
+E
+                            <span class="unit-price">$0.00</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total:</span>
+                        H[Image of total price]
+                          <span class="total-price">$0.00</span>
+                        </div>
+                _E
+s
+              </div>
 
-                    <button type="submit" class="btn btn-success btn-block">
-                        <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-                        Proceder al Pago
-                        <span class="loading-indicator" hidden>
-                            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-                        </span>
-                    </button>
-                </form>
-            </div>
-        </section>
+                    <button type="submit" class="btn btn-success btn-block">
+                        <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+        t[Image of shopping cart icon]
+                      Proceder al Pago
+                        <span class="loading-indicator" hidden>
+                            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+s
+nd
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </section>
+p
 
-        <!-- Testimonios -->
-        <section class="testimonials" aria-labelledby="testimonials-title">
-            <h2 id="testimonials-title">Lo que dicen nuestros usuarios</h2>
-            <div class="testimonials-grid">
-                <blockquote class="testimonial-card">
-                    <p>"¡Excelente servicio! La compra fue muy rápida y el proceso de verificación en el evento fue sin problemas."</p>
-                    <footer>
-                        <cite>María González</cite>
-                        <div class="rating" aria-label="5 de 5 estrellas">
-                            ★★★★★
-                        </div>
-                    </footer>
-                </blockquote>
-                <blockquote class="testimonial-card">
-                    <p>"Me encanta que puedo tener todos mis tickets en mi teléfono. ¡Muy conveniente!"</p>
-                    <footer>
-                        <cite>Carlos Rodríguez</cite>
-                        <div class="rating" aria-label="5 de 5 estrellas">
-                            ★★★★★
-                        </div>
-                    </footer>
-                </blockquote>
-                <blockquote class="testimonial-card">
-                    <p>"Sistema muy seguro y fácil de usar. Lo recomiendo totalmente."</p>
-                    <footer>
-                        <cite>Ana Martínez</cite>
-                        <div class="rating" aria-label="5 de 5 estrellas">
-                            ★★★★★
-                        </div>
-                    </footer>
-                </blockquote>
-            </div>
-        </section>
-    </main>
+        <!-- Testimonios -->
+        <section class="testimonials" aria-labelledby="testimonials-title">
+            <h2 id="testimonials-title">Lo que dicen nuestros usuarios</h2>
+            <div class="testimonials-grid">
+                <blockquote class="testimonial-card">
+Note
+                    <p>"¡Excelente servicio! La compra fue muy rápida y el proceso de verificación en el evento fue sin problemas."</p>
+                    <footer>
+                        <cite>María González</cite>
+Note
+                        <div class="rating" aria-label="5 de 5 estrellas">
+                            ★★★★★
+                        </div>
+            A
+          <footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p>"Me encanta que puedo tener todos mis tickets en mi teléfono. ¡Muy conveniente!"</p>
+                    <footer>
+                        <cite>Carlos Rodríguez</cite>
+                        <div class="rating" aria-label="5 de 5 estrellas">
+                            ★★★★★
+                        </div>
+                    </footer>
+                </blockquote>
+s
+                <blockquote class="testimonial-card">
+                    <p>"Sistema muy seguro y fácil de usar. Lo recomiendo totalmente."</p>
+                    <footer>
+                    á
+                      <cite>Ana Martínez</cite>
+                        <div class="rating" aria-label="5 de 5 estrellas">
+                            ★★★★★
+                        </div>
+                    </footer>
+                </blockquote>
+s
+            </div>
+        </section>
+    </main>
 
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-branding">
-                <img src="{{ url_for('static', filename='img/logo.webp') }}" 
-                     alt="QRPASS Logo" width="120" height="40"
-                     loading="lazy">
-                <p>Tu plataforma confiable de tickets QR</p>
-            </div>
-            
-            <div class="footer-links">
-                <nav aria-label="Enlaces del pie de página">
-                    <h3>Enlaces Útiles</h3>
-                    <ul>
-                        <li><a href="{{ url_for('main.faq') }}">Preguntas Frecuentes</a></li>
-                        <li><a href="{{ url_for('main.contacto') }}">Contacto</a></li>
-                        <li><a href="{{ url_for('main.privacidad') }}">Política de Privacidad</a></li>
-                        <li><a href="{{ url_for('main.terminos') }}">Términos y Condiciones</a></li>
-                    </ul>
-                </nav>
-            </div>
-            
-            <div class="footer-social">
-                <h3>Síguenos</h3>
-                <div class="social-links">
-                    <a href="https://facebook.com/qrpass" target="_blank" rel="noopener"
-                       aria-label="Síguenos en Facebook">
-                        <i class="fab fa-facebook" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://twitter.com/qrpass" target="_blank" rel="noopener"
-                       aria-label="Síguenos en Twitter">
-                        <i class="fab fa-twitter" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://instagram.com/qrpass" target="_blank" rel="noopener"
-                       aria-label="Síguenos en Instagram">
-                        <i class="fab fa-instagram" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; {{ current_year }} QRPASS. Todos los derechos reservados.</p>
-            <div class="theme-toggle">
-                <button id="theme-toggle" aria-label="Cambiar tema">
-                    <i class="fas fa-moon" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-    </footer>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-branding">
+s
+                <img src="{{ url_for('static', filename='img/logo.webp') }}" 
+                     alt="QRPASS Logo" width="120" height="40"
+                     loading="lazy">
+                <p>Tu plataforma confiable de tickets QR</p>
+al
+            </div>
+            
+            <div class="footer-links">
+October 2023
+                <nav aria-label="Enlaces del pie de página">
+                    <h3>Enlaces Útiles</h3>
+                    <ul>
+                        <!-- 
+                        <li><a href="{{ url_for('main.faq') }}">Preguntas Frecuentes</a></li>
+                        <li><a href="{{ url_for('main.contacto') }}">Contacto</a></li>
+                        <li><a href="{{ url_for('main.privacidad') }}">Política de Privacidad</a></li>
+Nota: He comentado los enlaces del footer que no tienen rutas definidas en routes.py
+                        <li><a href="{{ url_for('main.terminos') }}">Términos y Condiciones</a></li>
+                        -->
+                    </ul>
+                </nav>
+J
+            </div>
+            
+            <div class="footer-social">
+                <h3>Síguenos</h3>
+                <div class="social-links">
+                    <a href="https" target="_blank" rel="noopener"
+                       aria-label="Síguenos en Facebook">
+                        <i class="fab fa-facebook" aria-hidden="true"></i>
+                    </a>
+                ar
+                  <a href="https" target="_blank" rel="noopener"
+                       aria-label="Síguenos en Twitter">
+                        <i class="fab fa-twitter" aria-hidden="true"></i>
+Note
+                    </a>
+                    <a href="https" target="_blank" rel="noopener"
+                       aria-label="Síguenos en Instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+s
+                    </a>
+            all[Image of social media icons]
+            </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; {{ current_year }} QRPASS. Todos los derechos reservados.</p>
+Note: A dark mode toggle button.
+            <div class="theme-toggle">
+                <button id="theme-toggle" aria-label="Cambiar tema">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
 
-    <!-- Scripts -->
-    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </body>
 </html>
