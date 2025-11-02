@@ -281,7 +281,12 @@
                 <nav aria-label="Enlaces del pie de página">
                     <h3>Enlaces Útiles</h3>
                     <ul>
-                        
+                        <!-- 
+                        <li><a href="{{ url_for('main.faq') }}">Preguntas Frecuentes</a></li>
+                        <li><a href="{{ url_for('main.contacto') }}">Contacto</a></li>
+                        <li><a href="{{ url_for('main.privacidad') }}">Política de Privacidad</a></li>
+                        <li><a href="{{ url_for('main.terminos') }}">Términos y Condiciones</a></li>
+                        -->
                     </ul>
                 </nav>
             </div>
@@ -306,8 +311,7 @@
         </div>
         
         <div class="footer-bottom">
-            <!-- Asumiré que pasas 'current_year' desde un context processor, 
-                 si no, puedes hardcodear 2025 -->
+            <!-- Hardcodeo el año por si acaso -->
             <p>&copy; 2025 QRPASS. Todos los derechos reservados.</p>
             <div class="theme-toggle">
                 <button id="theme-toggle" aria-label="Cambiar tema">
@@ -321,4 +325,5 @@
     <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </body>
 </html>
+
 
