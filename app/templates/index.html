@@ -322,7 +322,172 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initMobileMenu();
+        initUserMenu();
+        initThemeToggle();
+        initPurchaseCalculator();
+        initAlerts();
+    });
+
+    /* --- 1. Menú Móvil (Hamburguesa) --- */
+    function initMobileMenu() {
+        const toggleBtn = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if(toggleBtn && navLinks) {
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Evita que se cierre inmediatamente al hacer clic
+                navLinks.classList.toggle('open');
+                
+                // Cambiar icono de barras a X
+                const icon = toggleBtn.querySelector('i');
+                if (navLinks.classList.contains('open')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Cerrar menú si tocas fuera
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    navLinks.classList.remove('open');
+                    const icon = toggleBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+    }
+
+    /* --- 2. Menú de Usuario (Dropdown) --- */
+    function initUserMenu() {
+        const userBtn = document.querySelector('.user-button');
+        const userDropdown = document.querySelector('.user-dropdown');
+
+        if (userBtn && userDropdown) {
+            userBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Alternar atributo hidden
+                if (userDropdown.hasAttribute('hidden')) {
+                    userDropdown.removeAttribute('hidden');
+                } else {
+                    userDropdown.setAttribute('hidden', '');
+                }
+            });
+
+            // Cerrar al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                if (!userBtn.contains(e.target)) {
+                    userDropdown.setAttribute('hidden', '');
+                }
+            });
+        }
+    }
+
+    /* --- 3. Modo Oscuro / Claro --- */
+    function initThemeToggle() {
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = toggleBtn.querySelector('i');
+
+        // Cargar preferencia guardada si existe
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        if(toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+        }
+    }
+
+    /* --- 4. Calculadora de Precios --- */
+    function initPurchaseCalculator() {
+        const eventSelect = document.getElementById('event');
+        const qtyInput = document.getElementById('quantity');
+        const btnMinus = document.querySelector('.quantity-btn.minus');
+        const btnPlus = document.querySelector('.quantity-btn.plus');
+        const unitPriceSpan = document.querySelector('.unit-price');
+        const totalPriceSpan = document.querySelector('.total-price');
+        const availableSpan = document.querySelector('.available-tickets');
+
+        if (!eventSelect || !qtyInput) return;
+
+        function updatePrice() {
+            const selectedOption = eventSelect.options[eventSelect.selectedIndex];
+            // Si no hay evento seleccionado, el precio es 0
+            const price = selectedOption.value ? (parseFloat(selectedOption.dataset.price) || 0) : 0;
+            const available = selectedOption.value ? (parseInt(selectedOption.dataset.available) || 0) : 0;
+            const quantity = parseInt(qtyInput.value) || 0;
+
+            unitPriceSpan.textContent = `$${price.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
+            totalPriceSpan.textContent = `$${(price * quantity).toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
+            
+            if (selectedOption.value) {
+                availableSpan.textContent = `Disponibles: ${available}`;
+                // Ajustar el máximo del input según disponibilidad
+                const maxAllowed = Math.min(10, available);
+                qtyInput.max = maxAllowed;
+                if (quantity > maxAllowed) qtyInput.value = maxAllowed;
+            } else {
+                availableSpan.textContent = '';
+            }
+        }
+
+        eventSelect.addEventListener('change', updatePrice);
+        qtyInput.addEventListener('input', updatePrice);
+
+        // Botones + y -
+        if(btnMinus && btnPlus) {
+            btnMinus.addEventListener('click', () => {
+                let current = parseInt(qtyInput.value) || 1;
+                if (current > 1) {
+                    qtyInput.value = current - 1;
+                    updatePrice();
+                }
+            });
+
+            btnPlus.addEventListener('click', () => {
+                let current = parseInt(qtyInput.value) || 1;
+                let max = parseInt(qtyInput.max) || 10;
+                if (current < max) {
+                    qtyInput.value = current + 1;
+                    updatePrice();
+                }
+            });
+        }
+    }
+
+    /* --- 5. Cerrar Alertas --- */
+    function initAlerts() {
+        const closeBtns = document.querySelectorAll('.alert-close');
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const alert = e.target.closest('.alert');
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300); // Esperar transición CSS
+            });
+        });
+    }
+</script>
 </body>
 </html>
 
